@@ -1,0 +1,38 @@
+cat("'degreenet' is part of the statnet suite of packages.\n")
+cat('Please read the license using license.statnet("degreenet")\n\n')
+cat("If you are using the 'degreenet' package for research that will be published,\n")
+cat("we request that you acknowledge this with the following citation:\n\n")
+cat("  Mark S. Handcock, David R. Hunter, Carter T. Butts, Steven M. Goodreau,\n")
+cat("  and Martina Morris (2003) statnet: Software tools for the Statistical\n")
+cat("  Modeling of Network Data. Version 2.0,\n")
+cat("  URL http://statnetproject.org.\n\n")
+cat("A BibTeX entry for LaTeX users is\n\n")
+cat("  @Manual{,\n")
+cat("    title = {statnet: Software tools for the Statistical Modeling of Network Data},\n")
+cat("    author = {Mark S. Handcock and David R. Hunter and Carter T. Butts and Steven M. Goodreau and Martina Morris},\n")
+cat("    year = {2003},\n")
+cat("    note = {Version 2.0},\n")
+cat("    address = {Seattle, WA},\n")
+cat("    url = {http://statnetproject.org},\n")
+cat("  }\n")
+citHeader("To cite the individual package 'degreenet' please use:")
+
+citEntry(entry="Manual",
+         title = "degreenet: Models for Skewed Count Distributions Relevant to Networks",
+         author = personList(as.person("Mark S. Handcock")),
+         year         = 2003,
+         note         = paste("Version",substring(library(help="degreenet",lib.loc=NULL,character.only=TRUE)$info[[1]][2],first=16)),
+         address      = "Seattle, WA",
+         url          = "http://statnetproject.org",
+         
+         textVersion = 
+         paste("Mark S. Handcock (2003) ", 
+               "degreenet: Models for Skewed Count Distributions Relevant to Networks. Version ",
+substring(library(help="degreenet",lib.loc=NULL,character.only=TRUE)$info[[1]][2],first=16),
+         ",", " URL http://statnetproject.org.",
+               sep="")
+         )
+
+citFooter("We have invested a lot of time and effort in creating the",
+          "'statnet' suite of packages for use by other researchers.",
+          "Please cite it in all papers where it is used.")
