@@ -1,4 +1,4 @@
-%  File degreenet/man/simpln.Rd
+%  File degreenet/man/simcmp.Rd
 %  Part of the statnet package, http://statnet.org
 %  This software is distributed under the GPL-3 license.  It is free,
 %  open source, and has the attribution requirements (GPL Section 7) in
@@ -6,33 +6,32 @@
 %
 % Copyright 2003 Mark S. Handcock, University of California-Los Angeles
 % Copyright 2007 The statnet Development Team
-\name{simpln}
-\alias{simpln}
-\title{Simulate from a Poisson Lognormal Distribution}
+\name{simcmp}
+\alias{simcmp}
+\title{Simulate from a Conway Maxwell Poisson Distribution}
 \description{
-Functions to generate random samples from a Poisson Lognormal Probability Distribution
+Functions to generate random samples from a Conway Maxwell Poisson Probability Distribution
 }
 \usage{
-simpln(n=100, v=c(0.6,1.2), maxdeg=10000, cutoff=1)
+simcmp(n=100, v=c(7,2.6), maxdeg=10000)
 }
 \arguments{
 \item{n}{number of samples to draw.}
-\item{v}{Poisson Lognormal parameters: lognormal mean and lognormal s.d.}
+\item{v}{Conway Maxwell Poisson parameters: lognormal mean and lognormal s.d.}
 \item{maxdeg}{Maximum degree to sample (using truncation of the distribution).}
-\item{cutoff}{Calculate estimates conditional on exceeding this value.}
 }
 \value{
  vector of random draws or samples.
 }
-\seealso{aplnmle, dpln}
+\seealso{acmpmle, dcmp}
 \note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
 details}
 \examples{
-# Now, simulate a Poisson Lognormal distribution over 100
+# Now, simulate a Conway Maxwell Poisson distribution over 100
 # observations with lognormal mean -1 and lognormal standard deviation 1.
 
 set.seed(1)
-s4 <- simpln(n=100, v=c(-1,1))
+s4 <- simcmp(n=100, v=c(7,3))
 table(s4)
 }
 \references{Jones, J. H. and Handcock, M. S. "An assessment

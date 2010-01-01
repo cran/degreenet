@@ -1,15 +1,14 @@
-######################################################################
+#  File degreenet/R/degreenet.R
+#  written July 2003
 #
-# R code for degreenet package
+#  Part of the statnet package, http://statnet.org
 #
-# copyright (c) 2003, Mark S. Handcock, University of Washington
-# written July 2003
-# Licensed under the GNU General Public License version 2 (June, 1991)
+#  This software is distributed under the GPL-3 license.  It is free,
+#  open source, and has the attribution requirements (GPL Section 7) in
+#    http://statnet.org/attribution
 #
-# Part of the R/degreenet package
-#
-# .First.lib is run when the package is loaded with library(degreenet)
-#
+# Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+# Copyright 2007 The statnet Development Team
 ######################################################################
 #
 # Exponential Power log-likelihood
@@ -1926,6 +1925,20 @@ ldwar <- function(v,x,cutoff=1){
 dwar <- function(v,x,cutoff=1){
  exp(ldwar(v,x,cutoff=cutoff))
 }
+lddqe <- function(v,x,cutoff=1){
+  x <- x[x>0]
+  cdfx <-  -v[1]*log(1+x/v[2])
+  cdfx1 <- -v[1]*log(1+(x-1)/v[2])
+  pdf <- log(exp(cdfx1)-exp(cdfx))
+  if(cutoff>1){
+   c0 <- 1-sum(ddqe(v=v,x=1:(cutoff-1)))
+   pdf <- pdf / c0
+  }
+  pdf
+}
+ddqe <- function(v,x,cutoff=1){
+ exp(lddqe(v,x,cutoff=cutoff))
+}
 ldghdi <- function(v,x,cutoff=1){
   m01 <- log(v[4])
   m10 <- v[3]-v[2]
@@ -2019,7 +2032,7 @@ awarmle <-function(x,cutoff=1,cutabove=1000,guess=c(3.5,0.1),
 #
 # Complete data log-likelihoods
 #
-llwarall <- function(v,x,cutoff=2,cutabove=1000,np=2){
+llwarall <- function(v,x,cutoff=1,cutabove=1000,np=2){
  x <- x[x<=cutabove]
  n <- length(x)
  tx <- tabulate(x+1)
@@ -2061,6 +2074,129 @@ llwar <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
   xv <- sort(unique(x))
   xp <- as.vector(table(x))
   out <- sum(xp*ldwar(v=probv,x=xv))-n*log(cprob)
+ }
+ if(is.infinite(out)){out <- -10^10}
+ if(is.na(out)){out <- -10^10}
+ }
+ out
+}
+#
+# q-Exponential
+#
+# Calculate the q-Exponential law MLE
+#
+adqemle <-function(x,cutoff=1,cutabove=1000,guess=c(3.5,1),
+                   method="BFGS", conc=FALSE, hellinger=FALSE, hessian=TRUE){
+ if(missing(guess) & hellinger){
+  guess <- adqemle(x=x,cutoff=cutoff,cutabove=cutabove,
+   method=method, guess=guess,
+   conc=FALSE,hellinger=FALSE)$theta
+ }
+ if(sum(x>=cutoff & x <= cutabove) > 0){
+  aaa <- optim(par=guess,fn=lldqe,
+#  lower=1.1,upper=30,
+#  method="L-BFGS-B",
+   method=method,
+   hessian=hessian,control=list(fnscale=-10),
+   x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
+  aaanm <- optim(par=guess,fn=lldqe,
+   hessian=hessian,control=list(fnscale=-10),
+   x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
+  if(aaanm$value > aaa$value){aaa<-aaanm}
+  names(aaa$par) <- c("q-Exponential PDF MLE","q-Exponential sigma")
+  if(is.psd(-aaa$hessian)){
+   asycov <- -solve(aaa$hessian)
+   dimnames(asycov) <- list(names(aaa$par),names(aaa$par))
+   asyse <- sqrt(diag(asycov))
+   asycor <- diag(1/asyse) %*% asycov %*% diag(1/asyse)
+   dimnames(asycor) <- dimnames(asycov)
+   names(asyse) <- names(aaa$par)
+   ccc <- list(theta=aaa$par,asycov=asycov,se=asyse,asycor=asycor)
+  }else{
+   ccc <- list(theta=aaa$par)
+  }
+ }else{
+  ccc <- list(theta=rep(NA,length=length(x)))
+ }
+#
+ concfn <- function(v){
+   if(v[1] <= 3 | v[2] < 0 | v[2] > 1){
+    conc <- 0
+   }else{
+    conc<-v[2]*(v[1]-3)/(2*(1-v[2])*(v[1]-2))
+   }
+   conc
+ }
+ ccc$conc <- concfn(aaa$par)
+#
+# ccc$conc <- NA
+# if(conc & exists("aaa")){
+# v <- aaa$par
+# probv <- v
+# probv[2] <- (probv[1]-2)/probv[2] - (probv[1]-1)
+# xr <- 1:10000
+# xr <- xr[xr >= cutoff]
+# if(cutoff>1){
+#  c0 <- 1-sum(ddqe(v=probv,1:(cutoff-1)))
+# }else{
+#  c0 <- 1
+# }
+# pdf <- ddqe(v=probv,xr) / c0
+# tx <- tabulate(x+1)/length(x)
+# tr <- 0:max(x)
+# names(tx) <- paste(tr)
+# nc <- tx[tr<cutoff]
+# nr <- tr[tr<cutoff]
+# p0 <- sum(nc)
+# p1 <- sum(nc * nr)
+# p2 <- sum(nc * nr^2)
+# conc<-(p1+sum(xr*pdf)*(1-p0))/(p2+sum(xr*xr*pdf)*(1-p0)-p1-sum(xr*pdf)*(1-p0))
+# ccc$conc <- conc
+# }
+ ccc
+}
+lldqeall <- function(v,x,cutoff=1,cutabove=1000,np=2){
+ x <- x[x<=cutabove]
+ n <- length(x)
+ tx <- tabulate(x+1)
+ tr <- 0:max(x)
+ names(tx) <- paste(tr)
+ nc <- tx[tr<cutoff]
+ aaa <- sum(nc*log(nc/n),na.rm=TRUE)+(n-sum(nc))*log((n-sum(nc))/n)+lldqe(v=v,x=x,cutoff=cutoff,cutabove=cutabove)
+ np <- np + cutoff
+ aaa <- c(np,aaa,-2*aaa+np*2+2*np*(np+1)/(n-np-1),-2*aaa+np*log(n))
+ names(aaa) <- c("np","log-lik","AICC","BIC")
+ aaa
+}
+lldqe <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
+ x <- x[x >= cutoff]
+ x <- x[x <= cutabove]
+ probv <- v
+#probv[2] <- (probv[1]-2)/probv[2] - (probv[1]-1)
+ if(probv[1]<=1.01 | probv[2]<=0){
+  out <- -10^10
+ }else{
+ n <- length(x)
+ if(cutoff>1){
+  cprob <- 1 - sum(ddqe(v=probv,x=1:(cutoff-1)))
+ }else{
+  cprob <- 1
+ }
+#
+ out <- -10^10
+ if(hellinger){
+  tr <- 0:max(x)
+  xr <- tr[tr >= cutoff]
+  pdf <- ddqe(v=probv,x=xr)
+# pdf <- pdf / cprob
+  tx <- tabulate(x+1)/length(x)
+  pc <- tx[tr>=cutoff]
+  out <- -sum(((sqrt(pc) - sqrt(pdf))^2)[pc > 0])
+  out <- out - 0.5 * (1-sum(pdf[pc>0])) # penalized Hellinger Distance
+ }else{
+  xv <- sort(unique(x))
+  xp <- as.vector(table(x))
+  out <- sum(xp*lddqe(v=probv,x=xv))-n*log(cprob)
  }
  if(is.infinite(out)){out <- -10^10}
  if(is.na(out)){out <- -10^10}

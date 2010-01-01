@@ -8,11 +8,11 @@ open source, and has the following attribution requirements
 
 (a) you agree to retain in 'degreenet' and any modifications to 'degreenet'
     the copyright, author attribution and URL information as
-    provided at http://statnetproject.org/attribution
+    provided at http://statnet.org/attribution
 (b) you agree that 'degreenet' and any modifications to 'degreenet' will,
     when used, display the attribution:
-     Based on 'statnet' project software (http://statnetproject.org).
-     For license and citation information see http://statnetproject.org/attribution
+     Based on 'statnet' project software (http://statnet.org).
+     For license and citation information see http://statnet.org/attribution
 (c) you agree that 'degreenet' and any modifications to 'degreenet' will
     display the citation information, as provided in the original
     CITATION file, when the 'citation' function is executed with
@@ -34,11 +34,12 @@ attributions must also appear when the package is loaded
 
 Enjoy!
 
-Mark S. Handcock, University of Washington
+Mark S. Handcock, University of California-Los Angeles
 David R. Hunter, Penn State University
 Carter T. Butts, University of California-Irvine
 Steven M. Goodreau, University of Washington
-Martina Morris, University of Washington
+Pavel N. Krivitsky, Carnegie Mellon University
+Martina Morris, University of California-Los Angeles
 
 The 'statnet' development team
 

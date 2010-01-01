@@ -1,9 +1,20 @@
+#  File degreenet/R/reedmolloy.R
+#  Part of the statnet package, http://statnet.org
+#
+#  This software is distributed under the GPL-3 license.  It is free,
+#  open source, and has the attribution requirements (GPL Section 7) in
+#    http://statnet.org/attribution
+#
+# Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+# Copyright 2007 The statnet Development Team
+######################################################################
 #
 # Find a graph from a given degree sequence
 # but not a random graph
 #
 reedmolloy <- function(deg,
                        greedy=FALSE,
+                       warn=TRUE,
                        verbose=TRUE){
  n <- length(deg) 
  mdeg <- max(deg) 
@@ -41,7 +52,11 @@ reedmolloy <- function(deg,
   i <- i + 1
  }
  if(sum(deg)>0 | i > n + 1){
-  stop("need repeat sample")
+  if(!warn){
+    stop("need repeat sample")
+  }else{
+    warning("need repeat sample")
+  }
  }
  if(require(network, quietly=TRUE)){
   network(sm, directed=FALSE)

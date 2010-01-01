@@ -1,3 +1,11 @@
+%  File degreenet/man/llpln.Rd
+%  Part of the statnet package, http://statnet.org
+%  This software is distributed under the GPL-3 license.  It is free,
+%  open source, and has the attribution requirements (GPL Section 7) in
+%    http://statnet.org/attribution
+%
+% Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+% Copyright 2007 The statnet Development Team
 \name{llpln}
 \alias{llpln}
 \title{Calculate the Conditional log-likelihood for the Poisson Lognormal Distributions}
@@ -8,7 +16,7 @@ conditionl on the count being at least the cutoff value and less than
 or equal to the cutabove value.
 }
 \usage{
-llpln(v, x, cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,approxlim = 10)
+llpln(v, x, cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,logn = TRUE)
 }
 \arguments{
 \item{v}{A vector of parameters for the Yule (a 1-vector - the scaling exponent).}
@@ -18,7 +26,8 @@ llpln(v, x, cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,approxlim = 10)
 \item{xr}{range of count values to use to approximate the set of all realistic counts.}
 \item{hellinger}{Calculate the Hellinger distance of the parametric model 
 from the data instead of the log-likelihood?}
-\item{approxlim}{Lower bound to apply numerical approximation.}
+\item{logn}{Use logn parametrization, that is, mean and variance on the
+observation scale.}
 }
 \value{
 the log-likelihood for the data \code{x} at parameter value \code{v}

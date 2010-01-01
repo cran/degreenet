@@ -1,8 +1,18 @@
+#  File degreenet/R/poissonlognormal.R
+#  Part of the statnet package, http://statnet.org
+#
+#  This software is distributed under the GPL-3 license.  It is free,
+#  open source, and has the attribution requirements (GPL Section 7) in
+#    http://statnet.org/attribution
+#
+# Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+# Copyright 2007 The statnet Development Team
+######################################################################
 #
 # Bootstrap CI for Poisson Lognormal
 #
 bootstrappln <- function(x,cutoff=1,cutabove=1000,
-                          m=200,alpha=0.95,guess=c(-1,1),
+                          m=200,alpha=0.95,guess=c(0.6,1.2),
                           file="none"){
 mle <- aplnmle(x=x,cutoff=cutoff,guess=guess)$theta
 bmles <- rep(0,length=m)
@@ -20,7 +30,7 @@ c(quantile(bmles,c(0.5*(1-alpha),(1-alpha),0.5,alpha,0.5+0.5*alpha),na.rm=TRUE),
 # Bootstrap CI for Poisson Lognormal Conc
 #
 bootstrapplnconc <- function(x,cutoff=1,cutabove=1000,
-                          m=200,alpha=0.95,guess=c(-1,1),
+                          m=200,alpha=0.95,guess=c(0.6,1.2),
                           file="none"){
 mle <- aplnmle(x=x,cutoff=cutoff,guess=guess,conc=TRUE)
 cmle <- mle$conc
@@ -83,26 +93,36 @@ bspln <- function(x, cutoff=1, m=200, np=2, alpha=0.95, v=NULL,
 #
 # Calculate the Poisson Lognormal law MLE
 #
-aplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(-1,1), approxlim=10,
-                   method="BFGS", conc=FALSE, hellinger=FALSE, hessian=TRUE){
+aplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(0.6,1.2),
+                   method="BFGS", conc=FALSE, hellinger=FALSE, hessian=TRUE,
+		   logn=TRUE){
  if(missing(guess) & hellinger){
   guess <- aplnmle(x=x,cutoff=cutoff,cutabove=cutabove,
    method=method, guess=guess,
    conc=FALSE,hellinger=FALSE)$theta
  }
+  if(logn){
+   guess[2] <- sqrt(log(1+(guess[2]*guess[2]-guess[1])/(guess[1]*guess[1])))
+   guess[1] <- log(guess[1])-0.5*guess[2]*guess[2]
+  }
+ if(!logn && (guess[2]*guess[2]<=guess[1])){stop("The Poisson-log-normal variance must be greater than the mean")}
+ if(logn && guess[2]<=0){stop("The Poisson-log-normal variance must be greater than zero.")}
  if(sum(x>=cutoff & x <= cutabove) > 0){
   aaa <- optim(par=guess,fn=llpln,
 #  lower=1.1,upper=30,
 #  method="L-BFGS-B",
    method=method,
    hessian=hessian,control=list(fnscale=-10),
-   x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger,
-   approxlim=approxlim)
+   x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   aaanm <- optim(par=guess,fn=llpln,
    hessian=hessian,control=list(fnscale=-10),
-   x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger,
-   approxlim=approxlim)
+   x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
+  if(logn){
+    aaa$par[1] <- exp(aaa$par[1]+0.5*aaa$par[2]*aaa$par[2])
+    aaa$par[2] <- aaa$par[1]*sqrt(exp(aaa$par[2]*aaa$par[2])-1)
+    aaa$par[2] <- sqrt(aaa$par[1]+aaa$par[2]*aaa$par[2])
+  }
   names(aaa$par) <- c("Poisson Lognormal mean","Poisson Lognormal s.d.")
   if(is.psd(-aaa$hessian)){
    asycov <- -solve(aaa$hessian)
@@ -130,7 +150,7 @@ aplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(-1,1), approxlim=10,
  }else{
   c0 <- 1
  }
- pdf <- dpln(v=probv,x=xr,approxlim=approxlim) / c0
+ pdf <- dpln(v=probv,x=xr) / c0
  tx <- tabulate(x+1)/length(x)
  tr <- 0:max(x)
  names(tx) <- paste(tr)
@@ -147,32 +167,32 @@ aplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(-1,1), approxlim=10,
 #
 # Complete data log-likelihoods
 #
-llplnall <- function(v,x,cutoff=1,cutabove=1000,np=2,approxlim=10){
+llplnall <- function(v,x,cutoff=1,cutabove=1000,np=2,logn=TRUE){
  x <- x[x<=cutabove]
  n <- length(x)
  tx <- tabulate(x+1)
  tr <- 0:max(x)
  names(tx) <- paste(tr)
  nc <- tx[tr<cutoff]
- aaa <- sum(nc*log(nc/n),na.rm=TRUE)+(n-sum(nc))*log((n-sum(nc))/n)+llpln(v=v,x=x,cutoff=cutoff,cutabove=cutabove,approxlim=approxlim)
+ aaa <- sum(nc*log(nc/n),na.rm=TRUE)+(n-sum(nc))*log((n-sum(nc))/n)+llpln(v=v,x=x,cutoff=cutoff,cutabove=cutabove,logn=logn)
  np <- np + cutoff
  aaa <- c(np,aaa,-2*aaa+np*2+2*np*(np+1)/(n-np-1),-2*aaa+np*log(n))
  names(aaa) <- c("np","log-lik","AICC","BIC")
  aaa
 }
-llpln <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,
-                  approxlim=10){
+llpln <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,logn=TRUE){
  x <- x[x >= cutoff]
  x <- x[x <= cutabove]
  probv <- v
 #probv[2] <- log(probv[2])
 #if(probv[1]<=1.01 | probv[2]<=-1 | probv[1] > 50 | probv[2] > 100){
- if(probv[2]< 0.0){
+ if(!logn && (probv[1]<= 0.0 | probv[2]*probv[2] < probv[1])){
   out <- -10^10
  }else{
+ if(logn && probv[2]<= 0.0){return(-10^10)}
  n <- length(x)
  if(cutoff>0){
-  cprob <- 1 - sum(dpln(v=probv,x=0:(cutoff-1)))
+  cprob <- 1 - sum(dpln(v=probv,x=0:(cutoff-1),logn=logn))
  }else{
   cprob <- 1
  }
@@ -181,7 +201,7 @@ llpln <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,
  if(hellinger){
   tr <- 0:max(x)
   xr <- tr[tr >= cutoff]
-  pdf <- dpln(v=probv,x=xr)
+  pdf <- dpln(v=probv,x=xr,logn=logn)
 # pdf <- pdf / cprob
   tx <- tabulate(x+1)/length(x)
   pc <- tx[tr>=cutoff]
@@ -190,7 +210,7 @@ llpln <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE,
  }else{
   xv <- sort(unique(x))
   xp <- as.vector(table(x))
-  out <- sum(xp*ldpln(v=probv,x=xv,approxlim=approxlim))-n*log(cprob)
+  out <- sum(xp*ldpln(v=probv,x=xv,logn=logn))-n*log(cprob)
  }
  if(is.infinite(out)){out <- -10^10}
  if(is.na(out)){out <- -10^10}
@@ -294,7 +314,7 @@ llrplnall <- function(v,x,cutoff=1,cutabove=1000,np=2){
 #
 # Calculate the rounded Poisson Lognormal law MLE
 #
-rplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(-1,1),
+rplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(0.6,1.2),
                    method="BFGS", conc=FALSE, hellinger=FALSE, hessian=TRUE){
  if(missing(guess) & hellinger){
   guess <- rplnmle(x=x,cutoff=cutoff,cutabove=cutabove,
@@ -356,7 +376,7 @@ rplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(-1,1),
 # Bootstrap CI for rounded Poisson Lognormal
 #
 bootstraprpln <- function(x,cutoff=1,cutabove=1000,
-                          m=200,alpha=0.95,guess=c(-1,1),hellinger=FALSE,
+                          m=200,alpha=0.95,guess=c(0.6,1.2),hellinger=FALSE,
                           mle.meth="rplnmle"){
 #if(mle.meth!="rplnmlef"){
  aaa <- rplnmle(x=x,cutoff=cutoff,cutabove=cutabove,guess=guess,hellinger=hellinger)$theta
@@ -402,31 +422,6 @@ dpln1 <- function(v,x,cutoff=0,points=25,approxlim=10){
 ldpln1 <- function(v,x,cutoff=0){
  log(dpln(v,x,cutoff=cutoff))
 }
-ldpln <- function (v, x, cutoff = 0, points = 25, approxlim = 20) 
-{
-    quad <- gauss.hermite(points, iterlim = 10)
-    y <- x
-    high <- x > approxlim
-    if(any(!high)){
-     xr <- x[!high]
-     gha <- outer(quad[, 1]*v[2] + v[1], xr*v[2]*v[2], "+")
-     gha <- exp(-exp(gha))
-     aaa <- log(quad[, 2] %*% gha)
-     y[!high] <- xr*v[1]+0.5*xr*xr*v[2]*v[2] + aaa - lgamma(xr + 1)
-    }
-    if(any(high)){
-     xr <- x[high]
-     xrs <- (log(xr) - v[1])/v[2]
-     xrb <- xrs * xrs + log(xr) - v[1] - 1
-     aaa <- log(1+xrb/(2*xr*v[2]*v[2]))
-     y[high] <- -0.5*xrs*xrs + aaa - log(sqrt(2*pi)*v[2]*xr)
-    }
-    if (cutoff > 0) {
-      c0 <- 1 - sum(dpln(v = v, x = (0:(cutoff - 1))))
-      y <- y - log(c0)
-    }
-    y
-}
 dpln.refined <- function (v, x, cutoff = 0, points = 25, approxlim = 10) 
 {
     quad <- gauss.hermite(points, iter = 1000)
@@ -460,15 +455,42 @@ dpln.refined <- function (v, x, cutoff = 0, points = 25, approxlim = 10)
 #  gha <- exp(-exp(quad[,1]*sigma+mu+r*sigma*sigma))
 #  (r*mu+r*r*sig2*0.5)*sum(gha*quad[,2])/gamma(r+1)
 #}
-#ldpln <- function(v,x,cutoff=0){
-# log(dpln(v,x,cutoff=cutoff))
-#}
-dpln <- function(v,x,cutoff=0,approxlim=20){
- exp(ldpln(v,x,cutoff=cutoff,approxlim=approxlim))
+ldpln <- function(v,x,cutoff=0,logn=TRUE){
+ log(dpln(v,x,cutoff=cutoff,logn=logn))
+}
+dpln <- function(v,x,cutoff=0,logn=TRUE){
+  if(!logn){
+   # Convert v from observed to log-normal parameters
+   if(v[1]<=0 | v[2]<=0){return(x-x)}
+   if(v[2]*v[2]>v[1]){
+    sigma0 <- sqrt(log(1+(v[2]*v[2]-v[1])/(v[1]*v[1])))
+    mu0 <- log(v[1])-0.5*sigma0*sigma0
+   }else{
+    sigma0 <- 0.0000001
+    mu0 <- log(v[1])
+   }
+  }else{
+    sigma0 <- v[2]
+    mu0 <- v[1]
+  }
+# void dpln (int *x, double *mu, double *sig, int *n, double *val);
+  y <- .C("dpln",
+          x=as.integer(x),
+          mu=as.double(mu0),
+          sig=as.double(sigma0*sigma0),
+          n=as.integer(length(x)),
+          val=double(length(x)),
+          PACKAGE="degreenet")$val
+  if (cutoff > 0) {
+    c0 <- 1 - sum(dpln(v = v, x = (0:(cutoff - 1)), cutoff=0))
+    y <- y/c0
+  }
+  return(y)
 }
 #
 # These are the basic simulation routines
 #
-simpln <- function(n=100, v=c(-1,1), maxdeg=10000){
-  sample(x=1:maxdeg, size=n, replace=TRUE, prob=dpln(v=v,x=1:maxdeg,cutoff=1))
+simpln <- function(n=100, v=c(0.6,1.2), maxdeg=10000, cutoff=1){
+  sample(x=cutoff:maxdeg, size=n, replace=TRUE, 
+         prob=dpln(v=v,x=cutoff:maxdeg,cutoff=cutoff))
 }

@@ -1,3 +1,11 @@
+%  File degreenet/man/arplnmle.Rd
+%  Part of the statnet package, http://statnet.org
+%  This software is distributed under the GPL-3 license.  It is free,
+%  open source, and has the attribution requirements (GPL Section 7) in
+%    http://statnet.org/attribution
+%
+% Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+% Copyright 2007 The statnet Development Team
 \name{rplnmle}
 \alias{rplnmle}
 \alias{drpln}
@@ -12,7 +20,7 @@
 Functions to Estimate the Rounded Poisson Lognormal Discrete Probability Distribution via maximum likelihood.
 }
 \usage{
-rplnmle(x, cutoff = 1, cutabove = 1000, guess = c(-1,1),
+rplnmle(x, cutoff = 1, cutabove = 1000, guess = c(0.6,1.2),
     method = "BFGS", conc = FALSE, hellinger = FALSE, hessian=TRUE)
 }
 \arguments{

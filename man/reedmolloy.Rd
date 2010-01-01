@@ -1,3 +1,11 @@
+%  File degreenet/man/reedmolloy.Rd
+%  Part of the statnet package, http://statnet.org
+%  This software is distributed under the GPL-3 license.  It is free,
+%  open source, and has the attribution requirements (GPL Section 7) in
+%    http://statnet.org/attribution
+%
+% Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+% Copyright 2007 The statnet Development Team
 \name{reedmolloy}
 \alias{reedmolloy}
 \title{Generate a (non-random) network with a given degree sequence}
@@ -7,12 +15,13 @@ network is not random - that is, is not a random draw from all such networks.
 This requires the \code{network} package.
 }
 \usage{
-reedmolloy(deg, greedy=FALSE, verbose=TRUE)
+reedmolloy(deg, greedy=FALSE, warn=TRUE, verbose=TRUE)
 }
 \arguments{
 \item{deg}{vector of counts where element i is the number of actors with degree i.}
-\item{greedy}{Use a greedy algorithm that may perform better for larger networks,
-and may perform worse.}
+\item{greedy}{Use a greedy algorithm that may perform better for larger networks, and may perform worse.}
+
+\item{warn}{Give warning with the degree sequence is not compatible with a network.}
 \item{verbose}{Print out details of the progress of the algorithm.}
 }
 \value{
@@ -26,7 +35,7 @@ details}
 # Now, simulate a Poisson Lognormal distribution over 100
 # observations with mean = -1 and s.d. = 1.
 
-set.seed(6)
+set.seed(2)
 s4 <- simpln(n=100, v=c(-1,1))
 table(s4)
 #

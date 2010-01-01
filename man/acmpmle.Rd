@@ -1,4 +1,4 @@
-%  File degreenet/man/aplnmle.Rd
+%  File degreenet/man/acmpmle.Rd
 %  Part of the statnet package, http://statnet.org
 %  This software is distributed under the GPL-3 license.  It is free,
 %  open source, and has the attribution requirements (GPL Section 7) in
@@ -6,18 +6,24 @@
 %
 % Copyright 2003 Mark S. Handcock, University of California-Los Angeles
 % Copyright 2007 The statnet Development Team
-\name{aplnmle}
-\alias{aplnmle}
-\alias{dpln}
-\alias{ldpln}
-\alias{llplnall}
-\title{Poisson Lognormal Modeling of Discrete Data}
+\name{acmpmle}
+\alias{acmpmle}
+\alias{dcmp}
+\alias{llcmpall}
+\alias{cmp.mutonatural}
+\alias{cmp.naturaltomu}
+\alias{dcmp.natural}
+\alias{dcmp_mu}
+\alias{ldcmp.natural}
+\alias{llcmp}
+\alias{llcmpall}
+\title{Conway Maxwell Poisson Modeling of Discrete Data}
 \description{
-Functions to Estimate the Poisson Lognormal Discrete Probability Distribution via maximum likelihood.
+Functions to Estimate the Conway Maxwell Poisson Discrete Probability Distribution via maximum likelihood.
 }
 \usage{
-aplnmle(x, cutoff = 1, cutabove = 1000, guess = c(0.6,1.2),
-    method = "BFGS", conc = FALSE, hellinger = FALSE, hessian=TRUE,logn=TRUE)
+acmpmle(x, cutoff = 1, cutabove = 1000, guess=c(7,3),
+    method="BFGS", conc=FALSE, hellinger=FALSE, hessian=TRUE)
 }
 \arguments{
 \item{x}{A vector of counts (one per observation).}
@@ -30,7 +36,6 @@ aplnmle(x, cutoff = 1, cutabove = 1000, guess = c(0.6,1.2),
 data instead of maximizing the likelihood.}
 \item{hessian}{Calculate the hessian of the information matrix (for use with
 calculating the standard errors.}
-\item{logn}{Use logn parametrization, that is, mean and variance on the observation scale.}
 }
 \value{
  \item{theta}{vector of MLE of the parameters.}
@@ -40,17 +45,21 @@ calculating the standard errors.}
 %\item{value}{The maximized value of the function.}
  \item{conc}{The value of the concentration index (if calculated).}
 }
-\seealso{ayulemle, awarmle, simpln}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
-details}
+\seealso{ayulemle, awarmle, simcmp}
+\note{
+See the working papers on \url{http://www.csss.washington.edu/Papers} for
+details.
+
+Based on the C code in the package \pkg{compoisson} written by
+Jeffrey Dunn (2008).}
 \examples{
 
-# Simulate a Poisson Lognormal distribution over 100
-# observations with lognormal mean of -1 and lognormal variance of 1
+# Simulate a Conway Maxwell Poisson distribution over 100
+# observations with mean of 7 and variance of 3
 # This leads to a mean of 1
 
 set.seed(1)
-s4 <- simpln(n=100, v=c(-1,1))
+s4 <- simcmp(n=100, v=c(7,3))
 table(s4)
 
 #
@@ -58,34 +67,11 @@ table(s4)
 # interval for the parameters
 #
 
-s4est <- aplnmle(s4)
-s4est
-
-# Calculate the MLE and an asymptotic confidence
-# interval for rho under the Yule model
-#
-
-s4yuleest <- ayulemle(s4)
-s4yuleest
-
-# Calculate the MLE and an asymptotic confidence
-# interval for rho under the Waring model
-#
-
-s4warest <- awarmle(s4)
-s4warest
-
-#
-# Compare the AICC and BIC for the three models
-#
-
-llplnall(v=s4est$theta,x=s4)
-llyuleall(v=s4yuleest$theta,x=s4)
-llwarall(v=s4warest$theta,x=s4)
+acmpmle(s4)
 
 }
-\references{Jones, J. H. and Handcock, M. S. "An assessment
-of preferential attachment as a mechanism for human sexual
-network formation," Proceedings of the Royal Society, B, 2003,
-270, 1123-1128.}
+\references{
+compoisson: Conway-Maxwell-Poisson Distribution,
+Jeffrey Dunn, 2008, R package version 0.3
+}
 \keyword{models}

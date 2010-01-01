@@ -1,3 +1,11 @@
+%  File degreenet/man/bspln.Rd
+%  Part of the statnet package, http://statnet.org
+%  This software is distributed under the GPL-3 license.  It is free,
+%  open source, and has the attribution requirements (GPL Section 7) in
+%    http://statnet.org/attribution
+%
+% Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+% Copyright 2007 The statnet Development Team
 \name{bspln}
 \alias{bspln}
 \alias{bootstrappln}
@@ -12,7 +20,7 @@ interval of the MLE of the Poisson Lognormal Distribution.
 bspln(x, cutoff=1, m=200, np=2, alpha=0.95, v=NULL,
                    hellinger=FALSE)
 bootstrappln(x,cutoff=1,cutabove=1000,
-                          m=200,alpha=0.95,guess=c(-1, 1), file = "none")
+                          m=200,alpha=0.95,guess=c(0.6,1.2), file = "none")
 }
 \arguments{
 \item{x}{A vector of counts (one per observation).}

@@ -1,3 +1,11 @@
+%  File degreenet/man/ryule.Rd
+%  Part of the statnet package, http://statnet.org
+%  This software is distributed under the GPL-3 license.  It is free,
+%  open source, and has the attribution requirements (GPL Section 7) in
+%    http://statnet.org/attribution
+%
+% Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+% Copyright 2007 The statnet Development Team
 \name{ryule}
 \alias{ryule}
 \title{Generate a (non-random) network from a Yule Distribution}

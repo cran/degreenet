@@ -1,3 +1,11 @@
+%  File degreenet/man/degreenet-package.Rd
+%  Part of the statnet package, http://statnet.org
+%  This software is distributed under the GPL-3 license.  It is free,
+%  open source, and has the attribution requirements (GPL Section 7) in
+%    http://statnet.org/attribution
+%
+% Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+% Copyright 2007 The statnet Development Team
 \name{degreenet-package}
 \alias{degreenet-package}
 \alias{degreenet}
@@ -6,32 +14,32 @@
 Models for Skewed Count Distributions Relevant to Networks
 }
 \description{
-\code{\link{degreenet}} is a collection of functions to fit, diagnose, and simulate from distributions for skewed count data. The coverage of distributions is very selective, focusing on those that have been proposed to model the degree distribution on networks. For the rationale for this choice, see the papers in the references section below.
+\pkg{degreenet} is a collection of functions to fit, diagnose, and simulate from distributions for skewed count data. The coverage of distributions is very selective, focusing on those that have been proposed to model the degree distribution on networks. For the rationale for this choice, see the papers in the references section below.
 For a list of functions type: help(package='degreenet')
 
 For a complete list of the functions, use \code{library(help="degreenet")} 
 or read the rest of the manual. For a simple demonstration,
 use \code{demo(packages="degreenet")}.
 
-The \code{\link{degreenet}} package is part of the \code{\link[statnet]{statnet}} suite of packages. The suite was developed to facilitate the statistical analysis of network data.
+The \pkg{degreenet} package is part of the \pkg{statnet} suite of packages. The suite was developed to facilitate the statistical analysis of network data.
 
 When publishing results obtained using this package alone see the 
 citation in \code{citation(package="degreenet")}. The citation for the original
 paper to use this package is Handcock and Jones (2003) and it should be cited
 for the theoretical development.
 
-If you use other packages in the \code{\link[statnet]{statnet}} suite, please cite it
+If you use other packages in the \pkg{statnet} suite, please cite it
 as:
 
 Mark S. Handcock, David R. Hunter, Carter T. Butts, Steven M. Goodreau,
 and Martina Morris. 2003 
 \emph{statnet: Software tools for the Statistical Modeling of Network Data}
 \cr
-\url{http://statnetproject.org}.
+\url{http://statnet.org}.
 For complete citation information, use\cr
 \code{citation(package="statnet")}.
 
-All programs derived from this or other \code{\link[statnet]{statnet}} packages
+All programs derived from this or other \pkg{statnet} packages
 must cite them appropriately.
 }
 \details{
@@ -50,21 +58,21 @@ simulation tools for inference and validation, and a poor understanding of the
 inferential properties of nontrivial models.
 
 This package relies on the \code{\link[network]{network}} package which allows networks to be
-represented in \R. The \code{\link[statnet]{statnet}} suite of packages allows maximum likelihood estimates of
+represented in \R. The \pkg{statnet} suite of packages allows maximum likelihood estimates of
 exponential random network models to be calculated using Markov Chain Monte
 Carlo, as well as a broad range of statistical analysis of networks, such as
 tools for plotting networks, simulating
 networks and assessing model goodness-of-fit.
 
 For detailed information on how to download and install the software,
-go to the \code{\link[statnet]{statnet}} website:
-\url{http://statnetproject.org}.
+go to the \pkg{statnet} website:
+\url{http://statnet.org}.
 A tutorial, support newsgroup, references and links to further resources are provided there.
 }
 \author{
-Mark S. Handcock \email{handcock@stat.washington.edu}
+Mark S. Handcock \email{handcock@stat.ucla.edu}
 
-Maintainer: Mark S. Handcock \email{handcock@stat.washington.edu}
+Maintainer: Mark S. Handcock \email{handcock@stat.ucla.edu}
 }
 \references{
 Frank, O., and Strauss, D.(1986). \emph{Markov graphs.} Journal of the American
@@ -76,7 +84,7 @@ Jones, J. H. and Handcock, M. S. (2003).
 Handcock, M. S., Hunter, D. R., Butts, C. T.,  Goodreau,
 S. M., and Morris, M. (2003), 
 \emph{statnet: Software tools for the Statistical Modeling of Network Data.},\cr
-URL \url{http://statnetproject.org}
+URL \url{http://statnet.org}
 
 Strauss, D., and Ikeda, M.(1990). Pseudolikelihood estimation for social
 networks. Journal of the American Statistical Association, 85, 204-212. 
