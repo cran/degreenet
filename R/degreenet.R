@@ -1683,7 +1683,7 @@ nbmean <- function(aaa=NULL,theta=NULL){
   if(sum(is.na(V))>0){
    ev <- FALSE
   }else{
-   ev <- eigen(V, sym = TRUE, only.values = TRUE)$values
+   ev <- eigen(V, symmetric = TRUE, only.values = TRUE)$values
    ev <- all(ev/max(ev) > tol) & all(ev >=  - tol * abs(ev[1]))
    if(is.na(ev)){ev <- FALSE}
    if(ev != TRUE){ev <- FALSE}

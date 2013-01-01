@@ -1,5 +1,7 @@
-# Default NAMESPACE created by R
-# Remove the previous line if you edit this file
 
-# Export all names
-exportPattern(".")
+useDynLib(degreenet)
+
+importFrom(utils, packageDescription)
+
+# Export all names that do not begin with a dot.
+exportPattern("^[^\\.]")

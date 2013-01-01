@@ -402,7 +402,7 @@ c(quantile(bmles[,2],c(0.5*(1-alpha),0.5,0.5+0.5*alpha),na.rm=TRUE),aaa)
 # Compute the Poisson-Lognormal PMF
 #
 dpln1 <- function(v,x,cutoff=0,points=25,approxlim=10){
-  quad <- gauss.hermite(points,iter=1000)
+  quad <- gauss.hermite(points,iterlim=1000)
   y <- x
   xr <- x[x<=approxlim]
   gha <- exp(-exp(outer(quad[,1]*v[2]+v[1],xr*v[2]*v[2],"+")))
@@ -424,7 +424,7 @@ ldpln1 <- function(v,x,cutoff=0){
 }
 dpln.refined <- function (v, x, cutoff = 0, points = 25, approxlim = 10) 
 {
-    quad <- gauss.hermite(points, iter = 1000)
+    quad <- gauss.hermite(points, iterlim = 1000)
     y <- x
     high <- x > approxlim
     if(any(!high)){

@@ -1,7 +1,7 @@
 #cat("'statnet' is a suite of packages for the statistical modeling of network data.\n")
 #cat('Please read the license using license.statnet()\n')
 
-citHeader("'degreenet' is part of the statnet suite of packages.\n If you are using 'degreenet' for research that will be published, we request that you acknowledge this with the following citation:")
+citHeader("'degreenet' is part of the Statnet suite of packages.\n If you are using 'degreenet' for research that will be published, we request that you acknowledge this with the following citation:")
 
 citEntry(entry="Manual",
          title = "degreenet: Models for Skewed Count Distributions Relevant to Networks",
@@ -21,5 +21,5 @@ substring(library(help="degreenet",lib.loc=NULL,character.only=TRUE)$info[[1]][2
          )
 
 citFooter("We have invested a lot of time and effort in creating the",
-          "'statnet' suite of packages for use by other researchers.",
+          "Statnet suite of packages for use by other researchers.",
           "Please cite it in all papers where it is used.")

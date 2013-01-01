@@ -154,6 +154,17 @@
 \alias{ryulemlef}
 \alias{zeta}
 
+\alias{NVL}
+\alias{statnetStartupMessage}
+
+\alias{compress.data.frame}
+\alias{gcmpmle}
+\alias{gllcmp}
+\alias{gllcmp.narrow}
+\alias{gllcmpall}
+\alias{opttest}
+\alias{sort.data.frame}
+
 \description{
   Internal degreenet functions.
 }

@@ -48,6 +48,7 @@ bootstrapdp(x,cutoff=1,cutabove=1000,
 \note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
 details}
 \examples{
+\dontrun{
 # Now, simulate a Discrete Pareto distribution over 100
 # observations with expected count 1 and probability of another
 # of 0.2
@@ -70,6 +71,7 @@ s4est
 #
 
 bsdp(s4, m=20)
+}
 }
 \references{Jones, J. H. and Handcock, M. S. "An assessment
 of preferential attachment as a mechanism for human sexual

@@ -46,21 +46,21 @@ llggeo <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000){
    out <- out + xp[match(6,xv)]*log(sum(dgeom(x=(11: 20)-cutoff,prob=1/v[1])))
   }
   if(7 %in% xv){
-   prob <- pgeom(q=100-cutoff,prob=1/v[1],lower=TRUE)
-   prob <- prob - pgeom(q=20-cutoff,prob=1/v[1],lower=TRUE)
+   prob <- pgeom(q=100-cutoff,prob=1/v[1],lower.tail=TRUE)
+   prob <- prob - pgeom(q=20-cutoff,prob=1/v[1],lower.tail=TRUE)
    out <- out - xp[match(7,xv)]*log(prob)
   }
   if(8 %in% xv){
-   out <- out + xp[match(8,xv)]*pgeom(q=100-cutoff,prob=1/v[1],lower=FALSE,log.p=TRUE)
+   out <- out + xp[match(8,xv)]*pgeom(q=100-cutoff,prob=1/v[1],lower.tail=FALSE,log.p=TRUE)
   }
   if(9 %in% xv){
-   prob <- pgeom(q=20-cutoff,prob=1/v[1],lower=TRUE)
-   prob <- prob - pgeom(q=4-cutoff,prob=1/v[1],lower=TRUE)
+   prob <- pgeom(q=20-cutoff,prob=1/v[1],lower.tail=TRUE)
+   prob <- prob - pgeom(q=4-cutoff,prob=1/v[1],lower.tail=TRUE)
    out <- out - xp[match(9,xv)]*log(prob)
   }
   if(10 %in% xv){
-   prob <- pgeom(q=100-cutoff,prob=1/v[1],lower=TRUE)
-   prob <- prob - pgeom(q=4-cutoff,prob=1/v[1],lower=TRUE)
+   prob <- pgeom(q=100-cutoff,prob=1/v[1],lower.tail=TRUE)
+   prob <- prob - pgeom(q=4-cutoff,prob=1/v[1],lower.tail=TRUE)
    out <- out - xp[match(10,xv)]*log(prob)
   }
   if(is.infinite(out)){out <- -10^6}
@@ -295,7 +295,7 @@ ggymle <-function(x,cutoff=1,cutabove=1000,xr=1:10000,
 # Yule log-likelihood
 #
 llgyule <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
- if(hellinger){stop("Not implemented yer for grouped.\n")}
+ if(hellinger){stop("Not implemented yet for grouped.\n")}
  if(v<=1){
   out <- -10^6
  }else{
@@ -538,23 +538,23 @@ llgnb <- function(v,x,cutoff=1,cutabove=15000,hellinger=FALSE){
                                         prob=v[2])))
    }
    if(7 %in% xv){
-    prob <- pnbinom(q=100-cutoff,size=v[1]*v[2], prob=v[2],lower=TRUE)
-    prob <- prob - pnbinom(q=20-cutoff,size=v[1]*v[2], prob=v[2],lower=TRUE)
+    prob <- pnbinom(q=100-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=TRUE)
+    prob <- prob - pnbinom(q=20-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=TRUE)
     out <- out - xp[match(7,xv)]*log(prob)
 #   out <- out + xp[match(7,xv)]*log(sum(dnbinom(x=(21:100)-cutoff,size=v[1]*v[2], prob=v[2])))
    }
    if(8 %in% xv){
-    out <- out + xp[match(8,xv)]*pnbinom(q=100-cutoff,size=v[1]*v[2], prob=v[2],lower=FALSE,log.p=TRUE)
+    out <- out + xp[match(8,xv)]*pnbinom(q=100-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=FALSE,log.p=TRUE)
    }
    if(9 %in% xv){
-    prob <- pnbinom(q=20-cutoff,size=v[1]*v[2], prob=v[2],lower=TRUE)
-    prob <- prob - pnbinom(q=4-cutoff,size=v[1]*v[2], prob=v[2],lower=TRUE)
+    prob <- pnbinom(q=20-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=TRUE)
+    prob <- prob - pnbinom(q=4-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=TRUE)
     out <- out - xp[match(9,xv)]*log(prob)
 #   out <- out + xp[match(9,xv)]*log(sum(dnbinom(x=(5:20)-cutoff,size=v[1]*v[2],prob=v[2])))
    }
    if(10 %in% xv){
-    prob <- pnbinom(q=100-cutoff,size=v[1]*v[2], prob=v[2],lower=TRUE)
-    prob <- prob - pnbinom(q=4-cutoff,size=v[1]*v[2], prob=v[2],lower=TRUE)
+    prob <- pnbinom(q=100-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=TRUE)
+    prob <- prob - pnbinom(q=4-cutoff,size=v[1]*v[2], prob=v[2],lower.tail=TRUE)
     out <- out - xp[match(10,xv)]*log(prob)
    }
   }

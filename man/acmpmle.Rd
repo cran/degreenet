@@ -71,7 +71,7 @@ acmpmle(s4)
 
 }
 \references{
-compoisson: Conway-Maxwell-Poisson Distribution,
-Jeffrey Dunn, 2008, R package version 0.3
+{compoisson: Conway-Maxwell-Poisson Distribution},
+{Jeffrey Dunn}, {2008}, {R package version 0.3}
 }
 \keyword{models}

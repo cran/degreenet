@@ -1,11 +1,11 @@
 #  File degreenet/R/reedmolloy.R
-#  Part of the statnet package, http://statnet.org
+#  Part of the statnet package, http://statnetproject.org
 #
 #  This software is distributed under the GPL-3 license.  It is free,
 #  open source, and has the attribution requirements (GPL Section 7) in
-#    http://statnet.org/attribution
+#    http://statnetproject.org/attribution
 #
-# Copyright 2003 Mark S. Handcock, University of California-Los Angeles
+# Copyright 2003 Mark S. Handcock, University of Washington
 # Copyright 2007 The statnet Development Team
 ######################################################################
 #
@@ -27,7 +27,8 @@ reedmolloy <- function(deg,
   mdeg <- max(deg)
  }
  deg <- deg[order(-deg)]
- sm <- matrix(0,ncol=n,nrow=n)
+#sm <- matrix(0,ncol=n,nrow=n)
+ sm <- NULL
  i <- 1
  while(i <= n){
 # if(verbose){print(i)}
@@ -40,8 +41,9 @@ reedmolloy <- function(deg,
     }
     deg[x] <- deg[x] - 1
     deg[i] <- 0
-    sm[i,x] <- 1
-    sm[x,i] <- 1
+#   sm[i,x] <- 1
+#   sm[x,i] <- 1
+    sm <- rbind(sm,c(max(i,x),min(i,x)))
    }
   }else{
    if(verbose){
@@ -59,7 +61,9 @@ reedmolloy <- function(deg,
   }
  }
  if(require(network, quietly=TRUE)){
-  network(sm, directed=FALSE)
+  smn <- network.initialize(n, directed=FALSE)
+  smn <- add.edges(smn,as.list(sm[,1]),as.list(sm[,2]))
+# network(sm, directed=FALSE)
  }else{
   sm
  }
