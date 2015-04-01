@@ -18,17 +18,50 @@ double cmp(int x, double llambda, double nu, double lzcmp, int give_log)
      }
   }
 
-double zcmp(double lambda, double nu, double err, int give_log)
+double zcmp(double lambda, double nu, double err, int K, int give_log)
   {
-     double mj, z, aj;
+     double mj=0.0, z, aj;
      int j;
      z = 1.0 + lambda;
      aj = lambda;
-     for (j = 2; j < 100; j++){
+     for (j = 2; j < K; j++){
        mj=lambda/pow((double)j,nu);
        aj*=mj;
        z+=aj;
      }
+//Rprintf("cmp terms %d aj %f err %f\n", j, aj, err*(1-mj));
+//   while (aj < err*(1.-mj) && j < 1000){
+//   
+//   Next is relative error which we ignore
+     while (aj > err*z && j < 200){
+//if(j > 180){
+//       	Rprintf("cmp terms %d aj %f err*z %f z %f\n", j, aj, err*z, z);
+//Rprintf("nu %f lambda %f\n", nu, lambda);
+//}
+       j++;
+       mj=lambda/pow((double)j,nu);
+       aj*=mj;
+       z+=aj;
+     }
+//
+//
+//if(j==1000 | (aj > 1.)){
+if(j>=200){
+       mj=pow(lambda,1.0/nu);
+       aj=pow(mj,(1.0-nu)/2.0)*exp(nu*mj)/(pow(2.0*M_PI,(nu-1.0)/2.0)*sqrt(nu));
+Rprintf("nu %f lambda %f j %d ztilde %f z %f\n", nu, lambda, j, aj, z);
+       z=aj;
+}
+//if((mj > 1.) | (aj > 1.)){ return(-200000.0); }
+
+//   Add approx to remainder term
+//   mj=lambda/pow((double)(j+1),nu);
+//   aj*=mj;
+//   z+=(aj/(1.-mj));
+//if(j!=100){
+//Rprintf("cmp terms %d aj %e err %e bdd %e z %e\n", j, aj, err*(1-mj), aj/(1.-mj),z);
+//}
+//
      if(give_log){
       return( log(z) );
      }else{
@@ -37,9 +70,14 @@ double zcmp(double lambda, double nu, double err, int give_log)
   }
 
 void dcmp (int *x, double *lambda, double *nu, int *n, double *err, int *give_log, double *val) {
-  int i, give_log1=1;
+  int i, give_log1=1, xmax;
   double lzcmp;
-  lzcmp = zcmp(*lambda, *nu, *err, give_log1);
+  xmax=x[(*n)-1];
+  for (i = 0; i < (*n)-1; i++){
+    if(x[i] > xmax){xmax=x[i];}
+  }
+  lzcmp = zcmp(*lambda, *nu, *err, 2*xmax, give_log1);
+//Rprintf("lzcmp %f \n", lzcmp);
   for (i = 0; i < *n; i++){
     val[i] = cmp(x[i], log(*lambda), *nu, lzcmp, *give_log);
   }
@@ -49,13 +87,11 @@ void rcmp (int *x, double *lambda, double *nu, int *n, int *K, double *err) {
   int i, Ki, ni, popi, give_log0=0, give_log1=1;
   double gb, lzcmp, llambda;
   double *pi = (double *) malloc(sizeof(double) * (*K));
-  lzcmp = zcmp(*lambda, *nu, *err, give_log1);
   llambda = log(*lambda);
+  GetRNGstate();  /* R function enabling uniform RNG */
   Ki = (*K);
   ni = (*n);
-
-  GetRNGstate();  /* R function enabling uniform RNG */
-
+  lzcmp = zcmp(*lambda, *nu, *err, 2*Ki, give_log1);
   for (i = 0; i < Ki; i++){
     pi[i] = cmp(i, llambda, *nu, lzcmp, give_log0);
   }
@@ -68,8 +104,6 @@ void rcmp (int *x, double *lambda, double *nu, int *n, int *K, double *err) {
    while(gb > pi[popi]){popi++;}
    x[i] = popi;
   }
-
   PutRNGstate();  /* Disable RNG before returning */
-
   free(pi);
 }

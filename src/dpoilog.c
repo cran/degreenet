@@ -37,7 +37,7 @@ void dpln (int *x, double *mu, double *sig, int *n, double *val) {
      z = m+20;
      d = 10;
      while (d>0.000001) {
-        if ((x-1)*z-exp(z)-0.5/sig*((z-my)*(z-my))-mf+log(1000000)>0) z=z+d; else z=z-d;
+        if ((x-1)*z-exp(z)-0.5/sig*((z-my)*(z-my))-mf+log(1000000.0)>0.0) z=z+d; else z=z-d;
         d=d/2;
      }
      return(z);
@@ -54,7 +54,7 @@ void dpln (int *x, double *mu, double *sig, int *n, double *val) {
      z = m-20;
      d = 10;
      while (d>0.000001) {
-        if ((x-1)*z-exp(z)-0.5/sig*((z-my)*(z-my))-mf+log(1000000)>0) z=z-d; else z=z+d;
+        if ((x-1)*z-exp(z)-0.5/sig*((z-my)*(z-my))-mf+log(1000000.0)>0.0) z=z-d; else z=z+d;
         d=d/2;
      }
      return(z);
@@ -80,7 +80,7 @@ void dpln (int *x, double *mu, double *sig, int *n, double *val) {
 
   double poilogmy_f2(double z,int y,int x,double my1,double my2,double sig1,double sig2,double ro,double fac)
   {
-     return( poilog(y,my2+ro*sqrt(sig2/sig1)*(z-my1),sig2*(1-ro*ro)) *
+     return( poilog(y,my2+ro*sqrt(sig2/sig1)*(z-my1),sig2*(1.0-ro*ro)) *
              exp(x*z-exp(z)-fac-0.5/sig1*(z-my1)*(z-my1)) );
   }
 /*-------------------------------------------------------------------------------*/

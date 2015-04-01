@@ -15,21 +15,13 @@ from a Yule distribution.
 The resultant network is not random - that is, is not a random draw from all such networks.
 }
 \usage{
-ryule(n=20,rho=2.5,cutoff=1,cutabove=1000,
-                  greedy=FALSE,
-                  maxdeg=10000,maxout=TRUE,verbose=FALSE)
+ryule(n=20,rho=2.5, maxdeg=n-1, maxit=10, verbose=FALSE)
 }
 \arguments{
 \item{n}{Number of actors in the network.}
 \item{rho}{PDF exponent of the Yule distribution.}
-\item{cutoff}{Calculate estimates conditional on exceeding this value.}
-\item{cutabove}{Calculate estimates conditional on not exceeding this value.}
-\item{greedy}{Use a greedy algorithm that may perform better for larger networks,
-and may perform worse.}
-\item{maxdeg}{The maximum degree to simulate. The probabilities of the degrees are
-chosen by truncation.}
-\item{maxout}{Ensure the maximum degree of any actor is feasible - that is, at most
-the number of available actors.}
+\item{maxdeg}{Maximum degree to sample (using truncation of the distribution). If this is greater then \code{n-1} then \code{n-1} is used.}
+\item{maxit}{integer; maximum number of resamplings of the degree sequence to find a valid network.}
 \item{verbose}{Print out details of the progress of the algorithm.}
 }
 \value{

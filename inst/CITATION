@@ -1,22 +1,18 @@
-#cat("'statnet' is a suite of packages for the statistical modeling of network data.\n")
-#cat('Please read the license using license.statnet()\n')
-
 citHeader("'degreenet' is part of the Statnet suite of packages.\n If you are using 'degreenet' for research that will be published, we request that you acknowledge this with the following citation:")
 
-citEntry(entry="Manual",
-         title = "degreenet: Models for Skewed Count Distributions Relevant to Networks",
+bibentry(bibtype="Manual",
+         title = paste(meta$Package,": ", meta$Title, sep=""),
          author = personList(as.person("Mark S. Handcock")),
-         year         = 2003,
-         note         = paste("Version",substring(library(help="degreenet",lib.loc=NULL,character.only=TRUE)$info[[1]][2],first=16),". Project home page at http://statnet.org"),
-         address      = "Seattle, WA",
+         year         = substr(meta$Date,1,4),
+         note         = paste("R package version ", meta$Version, ". Project home page at http://statnet.org",sep=""),
+         address      = "Los Angeles, CA",
          url          = "http://CRAN.R-project.org/package=degreenet",
          
          textVersion = 
          paste("Mark S. Handcock (2003) ", 
-               "degreenet: Models for Skewed Count Distributions Relevant to Networks. Version ",
-substring(library(help="degreenet",lib.loc=NULL,character.only=TRUE)$info[[1]][2],first=16),
-         ". Project home page at http://statnet.org",
-         ",", " URL http://CRAN.R-project.org/package=degreenet.",
+               paste(meta$Package,": ", meta$Title, sep=""),
+               ", Version ", meta$Version, ". Project home page at http://statnet.org",
+               ",", " URL http://CRAN.R-project.org/package=degreenet.",
                sep="")
          )
 

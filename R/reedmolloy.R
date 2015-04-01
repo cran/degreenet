@@ -5,66 +5,40 @@
 #  open source, and has the attribution requirements (GPL Section 7) in
 #    http://statnetproject.org/attribution
 #
-# Copyright 2003 Mark S. Handcock, University of Washington
+# Copyright 2003 Mark S. Handcock, University of California - Los Angeles
 # Copyright 2007 The statnet Development Team
 ######################################################################
 #
 # Find a graph from a given degree sequence
-# but not a random graph
 #
-reedmolloy <- function(deg,
-                       greedy=FALSE,
-                       warn=TRUE,
+reedmolloy <- function(deg, maxit=10,
                        verbose=TRUE){
- n <- length(deg) 
- mdeg <- max(deg) 
- while(2*floor(sum(deg)/2) != sum(deg) ){
-  if(verbose & sum(deg)>1){
-   stop(paste("You have provided an odd number of links =",sum(deg),"\n",
-       "This does not make sense for this network, and so resample...\n"))
-  }
-  if(verbose){print(table(deg))}
-  mdeg <- max(deg)
+# sm is the list of edges (head, tail) counting from 1, 2, ...
+ if (!requireNamespace("igraph", quietly = TRUE) | !requireNamespace("network", quietly = TRUE)) {
+  stop('The reedmolloy function requires both the "igraph" and "network" packages to be available.')
  }
- deg <- deg[order(-deg)]
-#sm <- matrix(0,ncol=n,nrow=n)
- sm <- NULL
- i <- 1
- while(i <= n){
-# if(verbose){print(i)}
-  if(deg[i] <= sum(deg[-i]>0)){
-   if(deg[i]>0){
-    if(greedy){
-     x <- (((1:n)[-i])[deg[-i]>0])[1:deg[i]]
-    }else{
-     x <- sample(x=(1:n)[-i],size=deg[i],prob=deg[-i]/sum(deg[-i]))
-    }
-    deg[x] <- deg[x] - 1
-    deg[i] <- 0
-#   sm[i,x] <- 1
-#   sm[x,i] <- 1
-    sm <- rbind(sm,c(max(i,x),min(i,x)))
-   }
-  }else{
-   if(verbose){
-     print(paste("no fit on",i,"th node with",sum(deg),"links unallocated"))}
-   if(verbose){print(table(deg))}
-   i <- n + 2
-  }
-  i <- i + 1
- }
- if(sum(deg)>0 | i > n + 1){
-  if(!warn){
-    stop("need repeat sample")
-  }else{
-    warning("need repeat sample")
+ sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="vl")))
+ iter <- 0
+ if(!is.null(sm$error)){
+  sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="simple.no.multiple")))
+  while(!is.null(sm$error) & iter < maxit){
+   jitterdeg <- sample(seq_along(deg),size=2,prob=deg)
+   deg[jitterdeg] <- deg[jitterdeg] + 2*(runif(2)>0.5)-1
+   deg[deg==0] <- 2
+   sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="simple.no.multiple")))
+   iter <- iter + 1
   }
  }
- if(require(network, quietly=TRUE)){
-  smn <- network.initialize(n, directed=FALSE)
-  smn <- add.edges(smn,as.list(sm[,1]),as.list(sm[,2]))
-# network(sm, directed=FALSE)
- }else{
-  sm
+ if(iter >= maxit){
+   stop('The reedmolloy function failed to form a valid network from the passed degree sequence.')
  }
+# pnode <- sample(1:length(deg))
+ smn <- network::network.initialize(length(deg), directed=FALSE)
+# smn <- add.edges(x=smn,tail=as.list(pnode[sm[,1]+1]),head=as.list(pnode[sm[,2]+1]))
+#   tail=as.list(length(deg)-sm[,1]+1),
+#   head=as.list(length(deg)-sm[,2]+1))
+ smn <- network::add.edges.network(x=smn,
+   tail=as.list(sm$value[,1]),
+   head=as.list(sm$value[,2]))
+ return(smn)
 }

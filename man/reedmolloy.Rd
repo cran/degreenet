@@ -15,13 +15,11 @@ network is not random - that is, is not a random draw from all such networks.
 This requires the \code{network} package.
 }
 \usage{
-reedmolloy(deg, greedy=FALSE, warn=TRUE, verbose=TRUE)
+reedmolloy(deg, maxit=10, verbose=TRUE)
 }
 \arguments{
 \item{deg}{vector of counts where element i is the number of actors with degree i.}
-\item{greedy}{Use a greedy algorithm that may perform better for larger networks, and may perform worse.}
-
-\item{warn}{Give warning with the degree sequence is not compatible with a network.}
+\item{maxit}{integer; maximum number of jitterings of the degree sequence to find a valid network.}
 \item{verbose}{Print out details of the progress of the algorithm.}
 }
 \value{

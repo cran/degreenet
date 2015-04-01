@@ -71,7 +71,7 @@ s4est
 # asymptotic confidence interval for the parameter.
 #
 
-bspln(s4, m=20)
+bspln(s4, m=5)
 }
 \references{Jones, J. H. and Handcock, M. S. "An assessment
 of preferential attachment as a mechanism for human sexual

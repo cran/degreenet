@@ -31,7 +31,8 @@
 Functions to Estimate the Conditional Log-likelihood for Discrete Probability Distributions. The likelihood is calcualted condition on the count being at least the cutoff value and less than or equal to the cutabove value.
 }
 \usage{
-llyule(v, x, cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE, weights = rep(1, length(x)))
+llyule(v, x, cutoff=1,cutabove=1000, xr=1:10000 ,hellinger=FALSE,
+       weights = rep(1, length(x)))
 }
 \arguments{
 \item{v}{A vector of parameters for the Yule (a 1-vector - the scaling exponent).}

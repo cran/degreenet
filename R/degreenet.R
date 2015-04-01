@@ -1822,65 +1822,6 @@ for(i in 1:10){
 y
 }
 #                   - rbinom(sum(x==i),size=i,prob=scale[i+1])
-#
-# The rest is the zeta function code
-#
-zeta <- function(x, deriv.arg=0) 
-{
-    # 21/12/01; Thomas Yee 
-    # Riemann's zeta function
-    # For real x, not complex x. 
-    # Works. Applies to all real x using analytic continuation. 
-
-    if(!(length(deriv.arg)==1 && (deriv.arg==0 || deriv.arg==1 ||
-        deriv.arg==2)))
-        stop("deriv must be 0, 1, or 2")
-
-    if(any(Im(x) != 0))
-        stop("Sorry, currently can only handle x real, not complex")
-
-    ok <- is.finite(x) & x > 1   # Handles NAs 
-    ans <- rep(NA, length(x))
-    nn <- sum(ok)  # Effective length (excludes x < 1 values)
-    if(nn)
-        ans[ok] <- .Fortran("zetawr", as.double(x[ok]), ans=double(nn),
-                            as.integer(deriv.arg), as.integer(nn),
-                            PACKAGE="degreenet")$ans
-
-#   # Use analytic continuation to compute zeta(x), where x <0
-#   # Equivalent to below 
-#   ok <- is.finite(x) & x < 0   # Handles NAs 
-#   nn <- sum(ok)  # Effective length (excludes x < 0 values)
-#   if(nn && deriv.arg>0)
-#       stop("can't handle derivatives with analytic continuation")
-#   if(nn) {
-#       xx <- x[ok]
-#       temp <- .Fortran("zetawr", as.double(1-xx), ans=double(nn),
-#                        as.integer(deriv.arg), as.integer(nn),
-#                        PACKAGE="degreenet")$ans
-#       ans[ok] <- temp * (2*pi)^xx / (2 * cos(pi*xx/2) * gamma(xx))
-#   }
-
-    # Use analytic continuation to compute zeta(x), where x <1
-    # Abramowitz and Stegun, p.807
-    # Equivalent to above  
-    ok <- is.finite(x) & x < 1   # Handles NAs 
-    nn <- sum(ok)  # Effective length (excludes x < 1 values)
-    if(nn && deriv.arg>0)
-        stop("can't handle derivatives with analytic continuation")
-    if(nn) {
-        xx <- x[ok]
-        temp <- .Fortran("zetawr", as.double(1-xx), ans=double(nn),
-                         as.integer(deriv.arg), as.integer(nn),
-                         PACKAGE="degreenet")$ans
-        ans[ok] <- temp * (2*pi)^xx * sin(pi*xx/2) * gamma(1-xx) / pi 
-    }
-
-    # This is a singularity at 0. Could be improved 
-    ans[is.finite(x) & abs(x) < 1e-12] <- -0.5 
-
-    ans
-}
 "rmultinomial"<- function(n, p, rows = max(c(length(n), nrow(p))))
 {
 # 19 Feb 1997 (John Wallace, 17 Feb 1997 S-news)
