@@ -1,10 +1,10 @@
-8e8ba2866c3fbffa77412f61e3871d13 *DESCRIPTION
+ad6a6985940909e96d96e727863e2bfe *DESCRIPTION
 0298a69bd917c80d149ac5e3c8249bdf *LICENSE
 877ad6c1c1e9ba563f2d849a38c26bf2 *NAMESPACE
 8b31a3b97f44fe24323dd4bd6d4531c2 *R/bs.R
-97dbb459306b49a9cfb4087b6c1417a6 *R/cmp.R
+cc2cbeeefc61150db71a5a62c963fbee *R/cmp.R
 9d687dbe5058f8428c17f739fe2e5dbb *R/cmp.natural.R
-4f87fd6565ffe1d20b80536b339390a2 *R/degreenet.R
+34b8bc0510bff5c6b906c6cc2ce8a125 *R/degreenet.R
 7f59cf09d8b4f724e965645fc0ddf918 *R/degreenet.utils.R
 8d86d5c39df7ce4682643ba09a95ff99 *R/ghermite.R
 add05315ea8aff6a074f67bdbacc5b5c *R/groupedmodels.R
@@ -51,8 +51,8 @@ ee4a0540661c4049e956fcd37c44a9ea *man/simpln.Rd
 47f43dcd43807b546e2d7a6cdcde3dd3 *man/simwar.Rd
 9d98ef56d1cb6dbf4f6a0f3c1921db52 *man/simyule.Rd
 c4cadcf30ab9a4b42bf8cefa7c70edbd *man/sweden.Rd
-60e04e44865989ee9c2d2e8f9c896b3a *src/cmp.c
-01e3b4b0dc250d521af82ebcb20fda96 *src/cmp.h
+1207c3a6711406bb728290074aeae105 *src/cmp.c
+225c70c73437ab5aebad9ca8f00f536b *src/cmp.h
 17a2d8c508a501da8df0b2ceff0d8ab2 *src/dpoilog.c
 93078de09fa4a04a019eb4bf4959b358 *src/dpoilog.h
 1c245be953d2bfe122de17c6e1117b84 *src/zeta.c

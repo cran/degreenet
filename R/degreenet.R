@@ -1377,7 +1377,7 @@ llnby0all <- function(v,x,cutoff=2,cutabove=1000,np=3){
  names(aaa) <- c("np","log-lik","AICC","BIC")
  aaa
 }
-llpoiall <- function(v,x,cutoff=2,cutabove=1000,np=1){
+llpoiall <- function(v,x,cutoff=0,cutabove=1000,np=1){
  x <- x[x<=cutabove]
  n <- length(x)
  tx <- tabulate(x+1)

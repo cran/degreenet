@@ -22,8 +22,6 @@ acmpmle <-function(x,cutoff=1,cutabove=1000,guess=c(7,3),
  guess <- c(log(guess$lambda), log(guess$nu))
  if(sum(x>=cutoff & x <= cutabove) > 0){
   aaa <- optim(par=guess,fn=llcmp,
-#  lower=1.1,upper=30,
-#  method="L-BFGS-B",
    method=method,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
@@ -31,6 +29,7 @@ acmpmle <-function(x,cutoff=1,cutabove=1000,guess=c(7,3),
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
+  aaa$natural <- c(exp(aaa$par[1]),exp(aaa$par[2]))
   aaa$par <- cmp.naturaltomu(c(exp(aaa$par[1]),exp(aaa$par[2])))
   names(aaa$par) <- c("CMP mean","CMP s.d.")
   if(is.psd(-aaa$hessian)){
@@ -40,7 +39,8 @@ acmpmle <-function(x,cutoff=1,cutabove=1000,guess=c(7,3),
    asycor <- diag(1/asyse) %*% asycov %*% diag(1/asyse)
    dimnames(asycor) <- dimnames(asycov)
    names(asyse) <- names(aaa$par)
-   ccc <- list(theta=aaa$par,asycov=asycov,se=asyse,asycor=asycor)
+   ccc <- list(theta=aaa$par,asycov=asycov,se=asyse,asycor=asycor,
+	       natural=aaa$natural)
   }else{
    ccc <- list(theta=aaa$par)
   }
@@ -77,6 +77,8 @@ acmpmle <-function(x,cutoff=1,cutabove=1000,guess=c(7,3),
 # Complete data log-likelihoods
 #
 llcmpall <- function(v,x,cutoff=1,cutabove=1000,np=2){
+ v <- cmp.mutonatural(mu=v[1],sig=v[2])
+ v <- c(log(v$lambda), log(v$nu))
  x <- x[x<=cutabove]
  n <- length(x)
  tx <- tabulate(x+1)
@@ -94,8 +96,14 @@ llcmp <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
  x <- x[x <= cutabove]
  probv <- v
  n <- length(x)
- if(cutoff>0){
-  cprob <- 1 - sum(dcmp.natural(v=exp(probv),x=0:(cutoff-1)))
+ if (v[1]/exp(v[2]) > 13) { return(-10^10) }
+ if (cutoff > 0) {
+  if (v[1]/exp(v[2]) > 13) {
+   cprob=(cutoff:max(2*x,xr))*v[1]-exp(v[2])*lgamma((cutoff:max(2*x,xr))+1.0)
+   cprob <- sum(exp(cprob-max(cprob)))+max(cprob)
+  }else{
+   cprob <- 1 - sum(dcmp.natural(v = exp(probv), x = (0:(cutoff - 1)), cutoff=0))
+  }
  }else{
   cprob <- 1
  }
@@ -134,7 +142,8 @@ dcmp_mu <- function(v, x, cutoff=0, err=0.00001, log=FALSE){
             lambda=as.double(out$lambda),
             nu=as.double(out$nu),
             n=as.integer(length(x)),
-            ERr=as.double(err),
+            K=as.integer(max(2*x,200)),
+            err=as.double(err),
             give_log=as.integer(log),
             val=double(length(x)),
             PACKAGE="degreenet")$val
@@ -148,18 +157,28 @@ dcmp.natural <- function(v, x, cutoff=1, err=0.00001, log=FALSE){
   # Perform argument checking
   if (v[1] < 0 || v[2] < 0)
 	stop("Invalid arguments, only defined for mu >= 0, sd >= 0");
-  y <- .C("dcmp",
+  if (log(v[1])/v[2] > 15)
+	warning(paste("Arguments show extreme skewness and close to divergent.\n",v[1],v[2]));
+  if (log(v[1])/v[2] > 13) {
+    y=x*log(v[1])-v[2]*lgamma(x+1.0)
+    c0=(cutoff:max(2*x,200))*log(v[1])-v[2]*lgamma((cutoff:max(2*x,200))+1.0)
+    c0 <- sum(exp(c0))
+    y <- y/c0
+  }else{
+    y <- .C("dcmp",
             x=as.integer(x),
             lambda=as.double(v[1]),
             nu=as.double(v[2]),
             n=as.integer(length(x)),
+            K=as.integer(max(2*x,200)),
             err=as.double(err),
             give_log=as.integer(log),
             val=double(length(x)),
             PACKAGE="degreenet")$val
-  if (cutoff > 0) {
-    c0 <- 1 - sum(dcmp.natural(v = v, x = (0:(cutoff - 1)), cutoff=0))
-    y <- y/c0
+    if (cutoff > 0) {
+     c0 <- 1 - sum(dcmp.natural(v = v, x = (0:(cutoff - 1)), cutoff=0))
+     y <- y/c0
+    }
   }
   return(y)
 }

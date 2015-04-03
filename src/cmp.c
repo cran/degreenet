@@ -1,5 +1,5 @@
 /*******************************************************************/
-/* Computation of the Conway Maxwell Poisson                       */
+/* Computation of the log-likelihood and marginal posterior of size*/
 /*******************************************************************/
 
 #include "cmp.h"
@@ -28,6 +28,7 @@ double zcmp(double lambda, double nu, double err, int K, int give_log)
        mj=lambda/pow((double)j,nu);
        aj*=mj;
        z+=aj;
+//Rprintf("j %d\n", j);
      }
 //Rprintf("cmp terms %d aj %f err %f\n", j, aj, err*(1-mj));
 //   while (aj < err*(1.-mj) && j < 1000){
@@ -42,17 +43,32 @@ double zcmp(double lambda, double nu, double err, int K, int give_log)
        mj=lambda/pow((double)j,nu);
        aj*=mj;
        z+=aj;
+//Rprintf("j %d\n", j);
      }
 //
 //
 //if(j==1000 | (aj > 1.)){
-if(j>=200){
-       mj=pow(lambda,1.0/nu);
-       aj=pow(mj,(1.0-nu)/2.0)*exp(nu*mj)/(pow(2.0*M_PI,(nu-1.0)/2.0)*sqrt(nu));
-Rprintf("nu %f lambda %f j %d ztilde %f z %f\n", nu, lambda, j, aj, z);
-       z=aj;
-}
+//if(j>=200 && nu > 0.01){
+if(aj > err*z & j>=200 & j >= K){
+       mj=log(lambda)/nu;
+       if(mj > 10.0){ return( -100000.0 ); }
+       mj=exp(mj);
+       aj=(1.0-nu)*(log(2.0*M_PI)+log(nu))/2.0 + nu*mj -0.5*log(nu);
+       if(aj > 15.0){ return( -100000.0 ); }
+       if(give_log){
+        return( aj );
+       }else{
+        return( exp(aj) );
+       }
+//       aj=pow(mj,(1.0-nu)/2.0)*exp(nu*mj)/(pow(2.0*M_PI,(nu-1.0)/2.0)*sqrt(nu));
+// Rprintf("K %d nu %f lambda %f j %d ztilde %f z %f\n", K, nu, lambda, j, aj, z);
+       // The next line used to work
+//       if(aj > 1.0 + lambda){z=aj;}
+//}else{
+////Rprintf("nu %f lambda %f j %d z %f\n", nu, lambda, j, z);
+//if((mj > 1.) | (aj > 1.)){ Rprintf("mj %f aj %f\n", mj, aj); }
 //if((mj > 1.) | (aj > 1.)){ return(-200000.0); }
+}
 
 //   Add approx to remainder term
 //   mj=lambda/pow((double)(j+1),nu);
@@ -69,15 +85,25 @@ Rprintf("nu %f lambda %f j %d ztilde %f z %f\n", nu, lambda, j, aj, z);
      }
   }
 
-void dcmp (int *x, double *lambda, double *nu, int *n, double *err, int *give_log, double *val) {
-  int i, give_log1=1, xmax;
+void dcmp (int *x, double *lambda, double *nu, int *n, int *K, double *err, int *give_log, double *val) {
+  int i, give_log1=1;
+  int xmax=(*K);
   double lzcmp;
-  xmax=x[(*n)-1];
+  if(xmax < 5) {xmax=x[(*n)-1];}
+//if(xmax < 5) {
+// Rprintf("xmax %d n %d x[0] %d", xmax, (*n), x[0]);
+//}
   for (i = 0; i < (*n)-1; i++){
     if(x[i] > xmax){xmax=x[i];}
   }
   lzcmp = zcmp(*lambda, *nu, *err, 2*xmax, give_log1);
-//Rprintf("lzcmp %f \n", lzcmp);
+  if(lzcmp < -99999.0) {
+// Rprintf("xmax %d n %d nu %f lambda %f log(lambda)/nu %f\n", xmax, (*n), *nu, *lambda, log(*lambda)/(*nu));
+	  lzcmp = 0.0;
+  }
+//if(xmax < 5) {
+// Rprintf(" lzcmp %f \n", lzcmp);
+//}
   for (i = 0; i < *n; i++){
     val[i] = cmp(x[i], log(*lambda), *nu, lzcmp, *give_log);
   }
