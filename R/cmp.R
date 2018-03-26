@@ -21,11 +21,11 @@ acmpmle <-function(x,cutoff=1,cutabove=1000,guess=c(7,3),
  guess <- cmp.mutonatural(mu=guess[1],sig=guess[2])
  guess <- c(log(guess$lambda), log(guess$nu))
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llcmp,
+  aaa <- stats::optim(par=guess,fn=llcmp,
    method=method,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=llcmp,
+  aaanm <- stats::optim(par=guess,fn=llcmp,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -212,13 +212,13 @@ gcmpmle <-function(x,cutoff=1,cutabove=1000,guess=c(7,3),
  guess <- cmp.mutonatural(mu=guess[1],sig=guess[2])
  guess <- c(log(guess$lambda), log(guess$nu))
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=gllcmp,
+  aaa <- stats::optim(par=guess,fn=gllcmp,
 #  lower=1.1,upper=30,
 #  method="L-BFGS-B",
    method=method,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=gllcmp,
+  aaanm <- stats::optim(par=guess,fn=gllcmp,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}

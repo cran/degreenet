@@ -29,7 +29,7 @@ llggeo <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000){
  x <- x[x <= cutabove]
  n <- length(x)
  if(cutabove<1000){
-  cprob <- sum(dgeom(x=0:(cutabove-cutoff), prob=1/v[1]))
+  cprob <- sum(stats::dgeom(x=0:(cutabove-cutoff), prob=1/v[1]))
  }else{
   cprob <- 1
  }
@@ -37,13 +37,13 @@ llggeo <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000){
  if(n>0){
   xv <- sort(unique(x))
   xp <- as.vector(table(x))
-  lpgp <- dgeom(x=xv[xv<5]-cutoff, prob=1/v[1],log=TRUE)
+  lpgp <- stats::dgeom(x=xv[xv<5]-cutoff, prob=1/v[1],log=TRUE)
   out <- sum(xp[xv<5]*lpgp) - n*log(cprob)
   if(5 %in% xv){
-   out <- out + xp[match(5,xv)]*log(sum(dgeom(x=( 5: 10)-cutoff,prob=1/v[1])))
+   out <- out + xp[match(5,xv)]*log(sum(stats::dgeom(x=( 5: 10)-cutoff,prob=1/v[1])))
   }
   if(6 %in% xv){
-   out <- out + xp[match(6,xv)]*log(sum(dgeom(x=(11: 20)-cutoff,prob=1/v[1])))
+   out <- out + xp[match(6,xv)]*log(sum(stats::dgeom(x=(11: 20)-cutoff,prob=1/v[1])))
   }
   if(7 %in% xv){
    prob <- pgeom(q=100-cutoff,prob=1/v[1],lower.tail=TRUE)
@@ -73,7 +73,7 @@ llggeo <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000){
 #
 ggeomle <-function(x,cutoff=1,cutabove=1000,xr=1:10000,guess=mean(x[x>0])){
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llggeo,
+  aaa <- stats::optim(par=guess,fn=llggeo,
    lower=c(1.01),upper=c(10000),
    method="L-BFGS-B",
 #  method="BFGS",
@@ -94,7 +94,7 @@ ggeomle <-function(x,cutoff=1,cutabove=1000,xr=1:10000,guess=mean(x[x>0])){
  v <- aaa$par
  xr <- 1:10000
  xr <- xr[xr >= cutoff]
- pdf <- dgeom(x=xr-cutoff, prob=1/v[1])
+ pdf <- stats::dgeom(x=xr-cutoff, prob=1/v[1])
  tx <- tabulate(x+1)/length(x)
  tr <- 0:max(x)
  names(tx) <- paste(tr)
@@ -152,11 +152,11 @@ llgnby <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000){
 gnbymle <-function(x,cutoff=1,cutabove=1000,xr=1:10000,guess=c(3.5,50,0.1)){
  if(missing(guess)){guess <- c(gyulemle(x=x,cutoff=cutoff,cutabove=cutabove)$theta,5,0.1)}
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- try(optim(par=guess,fn=llgnby,
+  aaa <- try(stats::optim(par=guess,fn=llgnby,
    method="BFGS",
    hessian=TRUE,control=list(fnscale=-10,ndeps=c(0.00001,0.00001,0.00001)),
    x=x,cutoff=cutoff,xr=xr,cutabove=cutabove))
-  aaanm <- try(optim(par=guess,fn=llgnby,
+  aaanm <- try(stats::optim(par=guess,fn=llgnby,
    hessian=TRUE,control=list(fnscale=-10,ndeps=c(0.00001,0.00001,0.00001)),
    x=x,cutoff=cutoff,xr=xr,cutabove=cutabove))
   if(is.null(aaanm$value)){aaanm$value<- -10^10}
@@ -248,13 +248,13 @@ ggymle <-function(x,cutoff=1,cutabove=1000,xr=1:10000,
  if(missing(guess)){guess <- c(gyulemle(x=x,cutoff=cutoff,cutabove=cutabove)$theta,15)}
 #
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llggy,
+  aaa <- stats::optim(par=guess,fn=llggy,
 #  lower=1.1,upper=20,
 #  method="L-BFGS-B",
    method="BFGS",
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove)
-  aaanm <- optim(par=guess,fn=llggy,
+  aaanm <- stats::optim(par=guess,fn=llggy,
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -338,12 +338,12 @@ llgyule <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
 gyulemle <-function(x,cutoff=1,cutabove=1000,guess=3.5,conc=FALSE,
                     method="BFGS", hellinger=FALSE, hessian=TRUE){
  if(sum(x>=cutoff & x <= cutabove) > 2){
-  aaa <- try(optim(par=guess,fn=llgyule,
+  aaa <- try(stats::optim(par=guess,fn=llgyule,
    method=method,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger))
  options(warn=-1)
-  aaanm <- try(optim(par=guess,fn=llgyule,
+  aaanm <- try(stats::optim(par=guess,fn=llgyule,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger))
  options(warn=0)
@@ -569,11 +569,11 @@ llgnb <- function(v,x,cutoff=1,cutabove=15000,hellinger=FALSE){
 gnbmle <-function(x,cutoff=1,cutabove=15000,guess=c(5,0.2),
                   hellinger=FALSE,fixed=NULL,conc=FALSE){
  if(sum(x>=cutoff & x <= cutabove) > 0 & missing(fixed)){
-  aaa <- optim(par=guess,fn=llgnb,
+  aaa <- stats::optim(par=guess,fn=llgnb,
    method="BFGS",
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=llgnb,
+  aaanm <- stats::optim(par=guess,fn=llgnb,
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -926,11 +926,11 @@ c(quantile(bconc,c(0.5*(1-alpha),(1-alpha),0.5,alpha,0.5+0.5*alpha),na.rm=TRUE),
 gwarmle <-function(x,cutoff=1,cutabove=1000,
                    guess=c(3.5,0.1),conc=TRUE,hellinger=FALSE){
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llgwar,
+  aaa <- stats::optim(par=guess,fn=llgwar,
    method="BFGS",
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=llgwar,
+  aaanm <- stats::optim(par=guess,fn=llgwar,
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -1055,11 +1055,11 @@ llgwar <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
 gplnmle <-function(x,cutoff=1,cutabove=1000,
                    guess=c(3.5,0.0),conc=TRUE,hellinger=FALSE){
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llgpln,
+  aaa <- stats::optim(par=guess,fn=llgpln,
    method="BFGS",
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=llgpln,
+  aaanm <- stats::optim(par=guess,fn=llgpln,
    hessian=TRUE,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove,hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -1224,14 +1224,14 @@ llggeodp <- function(v,x,cutoff=1,cutabove=15000,xr=1:10000){
 ggeodpmle <-function(x,cutoff=1,cutabove=15000,xr=1:10000,guess=c(3.5,0.5),
   conc=FALSE){
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llggeodp,
+  aaa <- stats::optim(par=guess,fn=llggeodp,
 #  lower=c(0.1,1),upper=c(25,20000),
 #  method="L-BFGS-B",
    method="BFGS",
 #  hessian=TRUE,control=list(fnscale=-10,ndeps=c(0.0000001,0.000001),trace=6),
    hessian=TRUE,control=list(fnscale=-10,ndeps=c(0.0000001,0.000001)),
    x=x,cutoff=cutoff,xr=xr,cutabove=cutabove)
-  aaanm <- optim(par=guess,fn=llggeodp,
+  aaanm <- stats::optim(par=guess,fn=llggeodp,
    hessian=TRUE,control=list(fnscale=-10,ndeps=c(0.0000001,0.000001)),
    x=x,cutoff=cutoff,xr=xr,cutabove=cutabove)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -1264,7 +1264,7 @@ ggeodpmle <-function(x,cutoff=1,cutabove=15000,xr=1:10000,guess=c(3.5,0.5),
  pka <- c(0,cumsum((1/(1:max(xr))^v[1])))
  bbb <- pgeom(q=xr, prob=1/v[2],lower.tail=FALSE)
  aaa <- bbb/(zeta(v[1])*xr^v[1])
- bbb <- dgeom(x=xr, prob=1/v[2])
+ bbb <- stats::dgeom(x=xr, prob=1/v[2])
  aaa <- aaa + bbb*(1-pka[xr]/zeta(v[1]))
  aaa <- aaa/pgeom(q=cutoff-1, prob=1/v[2],lower.tail=FALSE)
  pdf <- aaa / cprob
@@ -1357,14 +1357,14 @@ llgdp <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
 #
 gdpmle <-function(x,cutoff=1,cutabove=1000,guess=3.5, hessian=TRUE){
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llgdp,
+  aaa <- stats::optim(par=guess,fn=llgdp,
 #  lower=1.1,upper=10,
 #  method="L-BFGS-B",
    method="BFGS",
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove)
  options(warn=-1)
-  aaanm <- optim(par=guess,fn=llgdp,
+  aaanm <- stats::optim(par=guess,fn=llgdp,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove)
  options(warn=0)
@@ -1434,18 +1434,18 @@ llgpoi <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
   if(n>0){
    cprob <- 1
    if(cutabove<1000){
-     cprob <- sum(dpois(lambda=v,x=cutoff:cutabove))
+     cprob <- sum(stats::dpois(lambda=v,x=cutoff:cutabove))
    }
    if(cutoff>1 & cutabove == 1000){
-     cprob <- 1-sum(dpois(lambda=v,x=1:(cutoff-1)))
+     cprob <- 1-sum(stats::dpois(lambda=v,x=1:(cutoff-1)))
    }
    if(hellinger){
-    pdf <- dpois(lambda=v,x=1:7)
-    pdf[ 5] <- sum(dpois(lambda=v,x= 5: 10))
-    pdf[ 6] <- sum(dpois(lambda=v,x=11: 20))
-    pdf[ 7] <- sum(dpois(lambda=v,x=21:100))
+    pdf <- stats::dpois(lambda=v,x=1:7)
+    pdf[ 5] <- sum(stats::dpois(lambda=v,x= 5: 10))
+    pdf[ 6] <- sum(stats::dpois(lambda=v,x=11: 20))
+    pdf[ 7] <- sum(stats::dpois(lambda=v,x=21:100))
     pdf <- pdf[(1:7) >= cutoff]
-    if(cutoff > 1){pdf <- pdf / (1-sum(dpois(lambda=v, x=1:(cutoff-1))))}
+    if(cutoff > 1){pdf <- pdf / (1-sum(stats::dpois(lambda=v, x=1:(cutoff-1))))}
     pc <- tabulate(x+1, nbins=8)/length(x)
     tr <- 0:7
     pc <- pc[tr >= cutoff]
@@ -1454,22 +1454,22 @@ llgpoi <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
     out <- -sum(((sqrt(pc) - sqrt(pdf))^2)[pc > 0])
     out <- out - 0.5 * (1-sum(pdf[pc>0])) # penalized Hellinger Distance
    }else{
-    out <- sum(dpois(lambda=v,x=x[x<5],log=TRUE)) - log(cprob)*n
-    out <- out + sum(x==5)*log(sum(dpois(lambda=v,x= 5: 10)))
+    out <- sum(stats::dpois(lambda=v,x=x[x<5],log=TRUE)) - log(cprob)*n
+    out <- out + sum(x==5)*log(sum(stats::dpois(lambda=v,x= 5: 10)))
     if(sum(x==6)>0){
-     out <- out + sum(x==6)*log(sum(dpois(lambda=v,x=11: 20)))
+     out <- out + sum(x==6)*log(sum(stats::dpois(lambda=v,x=11: 20)))
     }
     if(sum(x==7)>0){
-     out <- out + sum(x==7)*log(sum(dpois(lambda=v,x=21:100)))
+     out <- out + sum(x==7)*log(sum(stats::dpois(lambda=v,x=21:100)))
     }
     if(sum(x==8)>0){
-     out <- out + sum(x==8)*log(1-sum(dpois(lambda=v,x=1:100)))
+     out <- out + sum(x==8)*log(1-sum(stats::dpois(lambda=v,x=1:100)))
     }
     if(sum(x==9)>0){
-     out <- out + sum(x==9)*log(sum(dpois(lambda=v,x=5:20)))
+     out <- out + sum(x==9)*log(sum(stats::dpois(lambda=v,x=5:20)))
     }
     if(sum(x==10)>0){
-     out <- out + sum(x==10)*log(sum(dpois(lambda=v,x=5:100)))
+     out <- out + sum(x==10)*log(sum(stats::dpois(lambda=v,x=5:100)))
     }
    }
    if(is.infinite(out)){out <- NA}
@@ -1483,12 +1483,12 @@ llgpoi <- function(v,x,cutoff=1,cutabove=1000,xr=1:10000,hellinger=FALSE){
 #
 gpoimle <-function(x,cutoff=1,cutabove=1000,guess=3.5, hessian=TRUE){
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llgpoi,
+  aaa <- stats::optim(par=guess,fn=llgpoi,
    method="BFGS",
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove)
  options(warn=-1)
-  aaanm <- optim(par=guess,fn=llgpoi,
+  aaanm <- stats::optim(par=guess,fn=llgpoi,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove)
  options(warn=0)

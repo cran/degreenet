@@ -49,7 +49,7 @@ double zcmp(double lambda, double nu, double err, int K, int give_log)
 //
 //if(j==1000 | (aj > 1.)){
 //if(j>=200 && nu > 0.01){
-if(aj > err*z & j>=200 & j >= K){
+if((aj > err*z) && (j>=200) && (j >= K)){
        mj=log(lambda)/nu;
        if(mj > 10.0){ return( -100000.0 ); }
        mj=exp(mj);

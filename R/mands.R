@@ -37,7 +37,7 @@ mands <- function(x,type="dp",v,cutoff=1,cutabove=1000,hellinger=FALSE){
   cdf <- cumsum(pdf)
  }
  if(type=="geom"){
-  pdf <- dgeom(x=mx-cutoff, prob=1/v[1])
+  pdf <- stats::dgeom(x=mx-cutoff, prob=1/v[1])
   cdf <- cumsum(pdf)
  }
  if(type=="nb"){
@@ -109,7 +109,7 @@ mands <- function(x,type="dp",v,cutoff=1,cutabove=1000,hellinger=FALSE){
    aaa <- zeta(v[1])-sum((1:trunc(cutoff-0.999))^(-v[1]))
   }
   ppow <- 1/(aaa*mx^v[1])
-  ppoi <- dpois(x=mx, lambda=v[2])/(ppois(cutoff-1,
+  ppoi <- stats::dpois(x=mx, lambda=v[2])/(ppois(cutoff-1,
 lambda=v[2],lower.tail=FALSE))
   pdf <- v[3]*ppow + (1-v[3])*ppoi
   cdf <- cumsum(pdf)
@@ -128,7 +128,7 @@ prob=v[2]/(1+v[2]),lower.tail=FALSE))
   cdf <- cumsum(pdf)
  }
  if(type=="mixnbpoi"){
-  ppoi <- dpois(x=mx, lambda=v[3])/(ppois(cutoff-1,
+  ppoi <- stats::dpois(x=mx, lambda=v[3])/(ppois(cutoff-1,
 lambda=v[3],lower.tail=FALSE))
   pdf <- dnbinom(x=mx, size=v[2], prob=v[1]/(1+v[1]))
   pdf <- pdf / (pnbinom(q=cutoff-1, size=v[2],
@@ -186,7 +186,7 @@ plotcdf <- function(v, maxk=15,type="dp",cutoff=1, ptype="p",add=FALSE){
    aaa <- zeta(v[1])-sum((1:trunc(cutoff-0.999))^(-v[1]))
   }
   ppow <- 1/(aaa*mx^v[1])
-  ppoi <- dpois(x=mx, lambda=v[2])/(ppois(cutoff-1,
+  ppoi <- stats::dpois(x=mx, lambda=v[2])/(ppois(cutoff-1,
 lambda=v[2],lower.tail=FALSE))
   pdf <- v[3]*ppow + (1-v[3])*ppoi
   cdf <- cumsum(pdf)
@@ -205,7 +205,7 @@ prob=v[2]/(1+v[2]),lower.tail=FALSE))
   cdf <- cumsum(pdf)
  }
  if(type=="mixnbpoi"){
-  ppoi <- dpois(x=mx, lambda=v[3])/(ppois(cutoff-1,
+  ppoi <- stats::dpois(x=mx, lambda=v[3])/(ppois(cutoff-1,
 lambda=v[3],lower.tail=FALSE))
   pdf <- dnbinom(x=mx, size=v[2], prob=v[1]/(1+v[1]))
   pdf <- pdf / (pnbinom(q=cutoff-1, size=v[2],

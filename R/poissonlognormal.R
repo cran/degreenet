@@ -108,13 +108,13 @@ aplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(0.6,1.2),
  if(!logn && (guess[2]*guess[2]<=guess[1])){stop("The Poisson-log-normal variance must be greater than the mean")}
  if(logn && guess[2]<=0){stop("The Poisson-log-normal variance must be greater than zero.")}
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llpln,
+  aaa <- stats::optim(par=guess,fn=llpln,
 #  lower=1.1,upper=30,
 #  method="L-BFGS-B",
    method=method,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=llpln,
+  aaanm <- stats::optim(par=guess,fn=llpln,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}
@@ -322,11 +322,11 @@ rplnmle <-function(x,cutoff=1,cutabove=1000,guess=c(0.6,1.2),
    conc=FALSE,hellinger=FALSE)$theta
  }
  if(sum(x>=cutoff & x <= cutabove) > 0){
-  aaa <- optim(par=guess,fn=llrpln,
+  aaa <- stats::optim(par=guess,fn=llrpln,
    method=method,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
-  aaanm <- optim(par=guess,fn=llrpln,
+  aaanm <- stats::optim(par=guess,fn=llrpln,
    hessian=hessian,control=list(fnscale=-10),
    x=x,cutoff=cutoff,cutabove=cutabove, hellinger=hellinger)
   if(aaanm$value > aaa$value){aaa<-aaanm}

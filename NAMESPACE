@@ -1,4 +1,7 @@
 importFrom(utils, packageDescription)
+importFrom("grDevices", "pdf")
+importFrom("graphics", "lines", "plot", "points")
+importFrom("stats", "dgamma", "dgeom", "dnbinom", "dpois", "optim", "optimize", "pgamma", "pgeom", "pnbinom", "ppois", "qgamma", "quantile", "rbinom", "rpois", "runif")
 
 useDynLib(degreenet)
 

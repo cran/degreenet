@@ -2,7 +2,7 @@ cmp.mutonatural <- function (mu,sig,K=1000)
 {
 #   natural is log(lambda), -nu
     options(warn = -1)
-    result = optim(par=c(log(mu), 0), fn=function(p,mu,sig,K) {
+    result = stats::optim(par=c(log(mu), 0), fn=function(p,mu,sig,K) {
         j <- 0:K
         a <- dcmp.natural(x=j, v=c(exp(p[1]), exp(p[2])), err=0.00000001)
 	sqrt(abs(sum(a*j)^2-mu*mu)+abs(sum(a*j*j)-sig*sig-mu*mu))
