@@ -46,7 +46,7 @@ bootstrapyule(x,cutoff=1,cutabove=1000,
  \item{meanmles}{Mean of the bootstrap MLEs.}
 }
 \seealso{ayulemle, simyule, llyule}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Yule distribution over 100

@@ -35,7 +35,7 @@ Mark S. Handcock, David R. Hunter, Carter T. Butts, Steven M. Goodreau,
 and Martina Morris. 2003 
 \emph{statnet: Software tools for the Statistical Modeling of Network Data}
 \cr
-\url{http://statnet.org}.
+\url{https://statnet.org}.
 For complete citation information, use\cr
 \code{citation(package="statnet")}.
 
@@ -66,7 +66,7 @@ networks and assessing model goodness-of-fit.
 
 For detailed information on how to download and install the software,
 go to the \pkg{statnet} website:
-\url{http://statnet.org}.
+\url{https://statnet.org}.
 A tutorial, support newsgroup, references and links to further resources are provided there.
 }
 \author{
@@ -84,7 +84,7 @@ Jones, J. H. and Handcock, M. S. (2003).
 Handcock, M. S., Hunter, D. R., Butts, C. T.,  Goodreau,
 S. M., and Morris, M. (2003), 
 \emph{statnet: Software tools for the Statistical Modeling of Network Data.},\cr
-URL \url{http://statnet.org}
+URL \url{https://statnet.org}
 
 Strauss, D., and Ikeda, M.(1990). Pseudolikelihood estimation for social
 networks. Journal of the American Statistical Association, 85, 204-212. 

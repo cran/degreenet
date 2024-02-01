@@ -8,26 +8,24 @@
 % Copyright 2007 The statnet Development Team
 \name{reedmolloy}
 \alias{reedmolloy}
-\title{Generate a (non-random) network with a given degree sequence}
+\title{Generate a undirected network with a given sequence of degrees}
 \description{
-Generate a network with a given number of actors with a given degree. The resultant
-network is not random - that is, is not a random draw from all such networks.
-This requires the \code{network} package.
+Generate a undirected network where the degree of each actor is specified. The degree is the number of actors the actor is tied to.
+This returns a \code{network} object and requires the \code{igraph} package.
 }
 \usage{
 reedmolloy(deg, maxit=10, verbose=TRUE)
 }
 \arguments{
-\item{deg}{vector of counts where element i is the number of actors with degree i.}
+\item{deg}{vector of counts where element \eqn{i} is the degree of actor \eqn{i}. Its sum should be even.}
 \item{maxit}{integer; maximum number of jitterings of the degree sequence to find a valid network.}
 \item{verbose}{Print out details of the progress of the algorithm.}
 }
 \value{
- If the \code{network} package is available, the network is returned as
-a \code{network} object. If not a sociomatrix is returned.
+ The network is returned as a \code{network} object.
 }
 \seealso{ayulemle, dyule}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Poisson Lognormal distribution over 100

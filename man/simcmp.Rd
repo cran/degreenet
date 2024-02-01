@@ -24,7 +24,7 @@ simcmp(n=100, v=c(7,2.6), maxdeg=10000)
  vector of random draws or samples.
 }
 \seealso{acmpmle, dcmp}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Conway Maxwell Poisson distribution over 100

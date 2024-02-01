@@ -24,7 +24,7 @@ simwar(n=100, v=c(3.5, 0.1), maxdeg=10000)
  vector of random draws or samples.
 }
 \seealso{awarmle, dwar}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Waring distribution over 100

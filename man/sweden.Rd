@@ -36,7 +36,7 @@ from NIDA and Grant 1R01HD041877 from NICHD.
  Handcock, Mark S. and Jones, James Holland (2004),
  ``Likelihood-Based Inference for Stochastic Models of Sexual Network Formation"
 \emph{Theoretical Population Biology},
-\url{http://dx.doi.org/10.1016/j.tpb.2003.09.006}.
+\doi{10.1016/j.tpb.2003.09.006}.
 
  Jones, James Holland and Handcock, Mark S. (2003),
 \emph{Nature}, 423, 6940, 605-606.

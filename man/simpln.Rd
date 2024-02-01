@@ -25,7 +25,7 @@ simpln(n=100, v=c(0.6,1.2), maxdeg=10000, cutoff=1)
  vector of random draws or samples.
 }
 \seealso{aplnmle, dpln}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Poisson Lognormal distribution over 100

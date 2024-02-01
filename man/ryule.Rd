@@ -29,7 +29,7 @@ ryule(n=20,rho=2.5, maxdeg=n-1, maxit=10, verbose=FALSE)
 a \code{network} object. If not a sociomatrix is returned.
 }
 \seealso{ayulemle, dyule, reedmolloy}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Yule network of 30

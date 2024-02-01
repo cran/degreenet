@@ -169,31 +169,26 @@
   Internal degreenet functions.
 }
 \usage{
-bootstrapyule(x,cutoff=1,cutabove=1000,
-              m=200,alpha=0.95,guess=3.31,hellinger=FALSE,
-              mle.meth="ayulemle")
-}
-\details{
-  Most of these are similar to those for the Yule distribution or are not to be called by the user.
+adpmle(x, cutoff = 1, cutabove = 1000, guess = 3.5, hessian=TRUE)
 }
 \arguments{
- \item{x}{A vector of counts (one per observation).}
- \item{cutoff}{Calculate estimates conditional on exceeding this value.}
- \item{cutabove}{Calculate estimates conditional on not exceeding this value.}
- \item{range}{Maxumum cutoff to use}
- \item{lims}{Plotting limits}
- \item{m}{Number of bootstrap samples to draw}
- \item{alpha}{Confidence level to use}
- \item{guess}{Initial estimate at the MLE.}
- \item{hellinger}{Minimize Hellinger distance of the parametric model from the data instead of maximizing the likelihood.}
- \item{mle.meth}{Method of calculating the MLE}
+\item{x}{A vector of counts (one per observation).}
+\item{cutoff}{Calculate estimates conditional on exceeding this value.}
+\item{cutabove}{Calculate estimates conditional on not exceeding this value.}
+\item{guess}{Initial estimate at the MLE.}
+\item{hessian}{Calculate the hessian of the information matrix (for use with
+calculating the standard errors.}
 }
 \value{
- vector containing the lower bound, bootstrap median, upper bound and MLE
-for the model
+ \item{theta}{vector of MLE of the parameters.}
+ \item{asycov}{asymptotic covariance matrix.}
+ \item{asycor}{asymptotic correlation matrix.}
+ \item{se}{vector of standard errors for the MLE.}
+%\item{value}{The maximized value of the function.}
+ \item{conc}{The value of the concentration index (if calculated).}
 }
-\seealso{ayulemle, awarmle, dyule}
-\note{See the working papers on http://www.csss.washington.edu/Papers for details}
+\seealso{ayulemle, adqemle, simdqe}
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for details.}
 \references{Jones, J. H. and Handcock, M. S. "An assessment
 of preferential attachment as a mechanism for human sexual
 network formation," Proceedings of the Royal Society, B, 2003,

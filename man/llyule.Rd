@@ -49,7 +49,7 @@ the log-likelihood for the data \code{x} at parameter value \code{v}
 (or the Hellinder distance if \code{hellinger=TRUE}).
 }
 \seealso{ayulemle, llyuleall, dyule}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 

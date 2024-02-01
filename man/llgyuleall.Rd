@@ -32,7 +32,7 @@ and the categories are: \code{0=0, 1=1, 2=2, 3=3, 4=4, 5=5-10, 6=11-20, 7=21-100
  the log-likelihood for the data \code{x} at parameter value \code{v}.
 }
 \seealso{gyulemle, llgyule, dyule, llgwarall}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 #

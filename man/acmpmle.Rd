@@ -47,7 +47,7 @@ calculating the standard errors.}
 }
 \seealso{ayulemle, awarmle, simcmp}
 \note{
-See the working papers on \url{http://www.csss.washington.edu/Papers} for
+See the papers on \url{https://handcock.github.io/?q=Holland} for
 details.
 
 Based on the C code in the package \pkg{compoisson} written by

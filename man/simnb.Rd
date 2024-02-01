@@ -24,7 +24,7 @@ simnb(n=100, v=c(5,0.2), maxdeg=10000)
  vector of random draws or samples.
 }
 \seealso{anbmle, dnb}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 # Now, simulate a Negative Binomial distribution over 100

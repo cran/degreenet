@@ -41,7 +41,7 @@ llyuleall(v, x, cutoff = 2, cutabove = 1000,  np=1)
  the log-likelihood for the data \code{x} at parameter value \code{v}.
 }
 \seealso{ayulemle, llyule, dyule, llwarall}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 

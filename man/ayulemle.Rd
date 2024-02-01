@@ -40,7 +40,7 @@ calculating the standard errors.}
  \item{conc}{The value of the concentration index (if calculated).}
 }
 \seealso{ayulemle, awarmle, simyule}
-\note{See the working papers on \url{http://www.csss.washington.edu/Papers} for
+\note{See the papers on \url{https://handcock.github.io/?q=Holland} for
 details}
 \examples{
 
