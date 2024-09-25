@@ -112,7 +112,7 @@ void dcmp (int *x, double *lambda, double *nu, int *n, int *K, double *err, int 
 void rcmp (int *x, double *lambda, double *nu, int *n, int *K, double *err) {
   int i, Ki, ni, popi, give_log0=0, give_log1=1;
   double gb, lzcmp, llambda;
-  double *pi = (double *) malloc(sizeof(double) * (*K));
+  double *pi = (double *) R_Calloc(sizeof(double) * (*K), double);
   llambda = log(*lambda);
   GetRNGstate();  /* R function enabling uniform RNG */
   Ki = (*K);
@@ -131,5 +131,5 @@ void rcmp (int *x, double *lambda, double *nu, int *n, int *K, double *err) {
    x[i] = popi;
   }
   PutRNGstate();  /* Disable RNG before returning */
-  free(pi);
+  R_Free(pi);
 }

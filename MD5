@@ -1,4 +1,4 @@
-ec6823ada2ad53f29736fe7ee1078576 *DESCRIPTION
+fc66318c6ee509762c25efb86725688a *DESCRIPTION
 c9b51580e8edb680c411ac2391d3376d *LICENSE
 33471eb178d023132de13c5382a0b68e *NAMESPACE
 8b31a3b97f44fe24323dd4bd6d4531c2 *R/bs.R
@@ -15,7 +15,7 @@ c5f981e49170d523b3e1b734e032f6ee *R/reedmolloy.R
 8a8ced96a173ca49ecdc4eca823cf4f8 *R/simdist.R
 6184ed0834fd2683bab36bfc3d3e8949 *R/zeta.R
 2f670f5fcac3ee295136907be1be17da *R/zzz.R
-8faf250d78a120ba4c7ea2186efddd24 *build/partial.rdb
+aa5e5a2cbfaea3d9b6cdbe378ac48cee *build/partial.rdb
 6c1c5ca401e1e52a0c64981743419408 *data/sweden.RData
 7661271798ed437584a28ce69e27b213 *demo/00Index
 3204f87c8fc74d41a88f08703a5a4e10 *demo/ayulemle.r
@@ -53,9 +53,9 @@ d9f78c0b5906273cf00bd7ee03ce7250 *man/simpln.Rd
 e6dff75c5e9d1826b3c9f4a1fd5cb4cd *man/simyule.Rd
 c23492a52bba55a0e264944cced585f5 *man/sweden.Rd
 0591467303adfccfc1979abee3c551fc *src/R_init.c
-ce6555f7239f650ae71cc7526f463658 *src/cmp.c
+74a72eb76a9933ec0714e365283c32b7 *src/cmp.c
 225c70c73437ab5aebad9ca8f00f536b *src/cmp.h
-17a2d8c508a501da8df0b2ceff0d8ab2 *src/dpoilog.c
+ed2d9f1c5c0fbfd1746e8065cb6a9216 *src/dpoilog.c
 93078de09fa4a04a019eb4bf4959b358 *src/dpoilog.h
-1c245be953d2bfe122de17c6e1117b84 *src/zeta.c
+f6816b3cb90eb3825df4c25cef3be9b5 *src/zeta.c
 8add565721b2c56a259211b0af0bd229 *src/zeta.h

@@ -12,7 +12,7 @@ void zetaC (double *v, double *z) {
   int m, n, m2;
   double p, a2, fred, s, sum;
   s = (*v);
-  b2 = (double *)malloc( 12 * sizeof(double));
+  b2 = (double *)R_Calloc( 12 * sizeof(double), double);
   b2[0] = 1.0 / 6.0;
   b2[1] = -1.0 / 30.0;
   b2[2] = 1.0 / 42.0;
@@ -41,5 +41,5 @@ void zetaC (double *v, double *z) {
    sum = sum + 1.0 * exp(-s * log(1.0 * n));
   }
   *z = sum;
-  free(b2);
+  R_Free(b2);
 }
