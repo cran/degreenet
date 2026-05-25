@@ -17,15 +17,15 @@ reedmolloy <- function(deg, maxit=10,
  if (!requireNamespace("igraph", quietly = TRUE) | !requireNamespace("network", quietly = TRUE)) {
   stop('The reedmolloy function requires both the "igraph" and "network" packages to be available.')
  }
- sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="vl")))
+ sm <- .catchToList(igraph::as_edgelist(igraph::sample_degseq(deg,method="vl")))
  iter <- 0
  if(!is.null(sm$error)){
-  sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="simple.no.multiple")))
+  sm <- .catchToList(igraph::as_edgelist(igraph::sample_degseq(deg,method="simple.no.multiple")))
   while(!is.null(sm$error) & iter < maxit){
    jitterdeg <- sample(seq_along(deg),size=2,prob=deg)
    deg[jitterdeg] <- deg[jitterdeg] + 2*(runif(2)>0.5)-1
    deg[deg==0] <- 2
-   sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="simple.no.multiple")))
+   sm <- .catchToList(igraph::as_edgelist(igraph::sample_degseq(deg,method="simple.no.multiple")))
    iter <- iter + 1
   }
  }

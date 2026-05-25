@@ -1,6 +1,6 @@
 Package: degreenet
-Version: 1.3-6
-Date: 2024-09-25
+Version: 1.3-7
+Date: 2026-05-24
 Title: Models for Skewed Count Distributions Relevant to Networks
 Authors@R: c(
     person("Mark S.", "Handcock", role=c("aut","cre","cph"), email="handcock@stat.ucla.edu", comment=c(ORCID="0000-0002-9985-2785")))
@@ -11,8 +11,8 @@ License: GPL-3 + file LICENSE
 URL: https://statnet.org
 RoxygenNote: 7.3.2
 NeedsCompilation: yes
-Packaged: 2024-09-25 18:09:25 UTC; handcock
-Author: Mark S. Handcock [aut, cre, cph]
-    (<https://orcid.org/0000-0002-9985-2785>)
+Packaged: 2026-05-24 18:17:52 UTC; handcock
+Author: Mark S. Handcock [aut, cre, cph] (ORCID:
+    <https://orcid.org/0000-0002-9985-2785>)
 Repository: CRAN
-Date/Publication: 2024-09-25 23:30:02 UTC
+Date/Publication: 2026-05-25 15:20:07 UTC

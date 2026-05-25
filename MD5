@@ -1,4 +1,4 @@
-fc66318c6ee509762c25efb86725688a *DESCRIPTION
+9597ce64b32e7906558a0932545c9429 *DESCRIPTION
 c9b51580e8edb680c411ac2391d3376d *LICENSE
 33471eb178d023132de13c5382a0b68e *NAMESPACE
 8b31a3b97f44fe24323dd4bd6d4531c2 *R/bs.R
@@ -10,12 +10,12 @@ d9eb626ed5c15cc5bf7683fac94305ff *R/degreenet.R
 025664cf2ed111a1c1100de617c2c312 *R/groupedmodels.R
 edb94f3b5b992c705188a67393c85453 *R/mands.R
 6133c3fb5858c3323ac0b0f7c991f8a8 *R/poissonlognormal.R
-c5f981e49170d523b3e1b734e032f6ee *R/reedmolloy.R
-59c29db228f7c1bd0b139f20cc31e380 *R/ryule.R
+f7071f3eb384779d375b5b9f137fe056 *R/reedmolloy.R
+0a62ecef68eb43e47e9de519732b59b0 *R/ryule.R
 8a8ced96a173ca49ecdc4eca823cf4f8 *R/simdist.R
 6184ed0834fd2683bab36bfc3d3e8949 *R/zeta.R
 2f670f5fcac3ee295136907be1be17da *R/zzz.R
-aa5e5a2cbfaea3d9b6cdbe378ac48cee *build/partial.rdb
+533839446f70bde34a1050627ce80586 *build/partial.rdb
 6c1c5ca401e1e52a0c64981743419408 *data/sweden.RData
 7661271798ed437584a28ce69e27b213 *demo/00Index
 3204f87c8fc74d41a88f08703a5a4e10 *demo/ayulemle.r

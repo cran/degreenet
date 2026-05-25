@@ -29,10 +29,10 @@ ryule <- function(n=20,rho=2.5, maxdeg=n-1,maxit=10,verbose=FALSE){
   mdeg <- max(deg)
  }
  deg <- deg[order(-deg)]
- sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="vl")))
+ sm <- .catchToList(igraph::as_edgelist(igraph::sample_degseq(deg,method="vl")))
  iter <- 0
  if(!is.null(sm$error)){
-   sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="simple.no.multiple")))
+   sm <- .catchToList(igraph::as_edgelist(igraph::sample_degseq(deg,method="simple.no.multiple")))
    while(!is.null(sm$error) & iter < maxit){
     while(mdeg>n-1 | 2*floor(sum(deg)/2) != sum(deg) ){
      if(verbose & sum(deg)>1){
@@ -45,7 +45,7 @@ ryule <- function(n=20,rho=2.5, maxdeg=n-1,maxit=10,verbose=FALSE){
      mdeg <- max(deg)
     }
     deg <- deg[order(-deg)]
-    sm <- .catchToList(igraph::get.edgelist(igraph::degree.sequence.game(deg,method="simple.no.multiple")))
+    sm <- .catchToList(igraph::as_edgelist(igraph::sample_degseq(deg,method="simple.no.multiple")))
     iter <- iter + 1
    }
  }
